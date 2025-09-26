@@ -1,6 +1,6 @@
 import React from 'react'
 import './App.css'
-import Navbar from '../src/component/navbar.jsx'
+import Navbar from './component/navbar.jsx'
 import Home from './component/Home.jsx'
 // import './assets/FallingDrops.js'
 import ParticlesBackground from './assets/FallingDrops.jsx'
