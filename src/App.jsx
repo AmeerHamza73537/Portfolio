@@ -5,6 +5,7 @@ import Home from './component/Home.jsx'
 // import './assets/FallingDrops.js'
 import ParticlesBackground from './assets/FallingDrops.jsx'
 import About from './component/About.jsx'
+import Skills from './component/Skills.jsx'
 function App() {
   
 
@@ -16,6 +17,7 @@ function App() {
       <Navbar/>
       <Home/>
       <About/>
+      <Skills/>
     </>
   )
 }
