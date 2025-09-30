@@ -45,13 +45,13 @@ const Skills = () => {
       <section className="py-10 text-white">
       <div className="max-w-6xl mx-auto px-5">
         <h2 className="text-3xl font-bold text-center mb-8">Tech Stack</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 ">
           {skills.map((skill, index) => (
             <div
               key={index}
-              className="flex items-center gap-2 bg-neutral-900 rounded-xl px-4 py-2 hover:scale-105 transition-transform"
+              className="flex items-center justify-center gap-2 bg-neutral-900 rounded-xl px-4 py-2 duration-500 hover:scale-120  hover:bg-indigo-500  transition-transform"
             >
-              <img src={skill.icon} alt={skill.name} className="w-6 h-6" />
+              <img src={skill.icon} alt={skill.name} className="w-6 h-6 transition-transform duration-500 hover:rotate-360" />
               <span className="text-sm">{skill.name}</span>
             </div>
           ))}
