@@ -8,7 +8,7 @@ import { SiLeetcode } from "react-icons/si";
 const Footer = () => {
   return (
     <>
-      <footer className=" border-t border-[#3c3736] text-gray-400 py-8">
+      <footer className=" bg-black border-t border-[#3c3736] text-gray-400 py-8">
         <div className="flex flex-col items-center space-y-6">
           {/* Social Icons */}
           <div className="flex space-x-6">

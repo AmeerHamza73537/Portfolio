@@ -8,13 +8,14 @@ import About from './component/About.jsx'
 import Skills from './component/Skills.jsx'
 import Contact from './component/Contact.jsx'
 import Footer from './component/Footer.jsx'
+import Cursor from './assets/Cursor.jsx'
 function App() {
   
 
 
   return (
     
-    <>  
+    <div className='relative cursor-none'>  
       <ParticlesBackground/>
       <Navbar/>
       <Home/>
@@ -22,7 +23,8 @@ function App() {
       <Skills/>
       <Contact/>
       <Footer/>
-    </>
+      <Cursor/>
+    </div>
   )
 }
 
