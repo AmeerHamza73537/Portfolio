@@ -26,12 +26,11 @@
   border: 2px solid white;
 } */
 #inner-hero{
-  /* border: 2px solid white; */
   position: relative;
   top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 89%;
+  left: 60%;
+  transform: translate(-60%, -50%);
+  width: 88%;
 }
 #hero-name{
   font-size: 87px;
@@ -60,3 +59,11 @@
   height: auto;
   max-width: 100%;
 }
+/* #project-content{
+  padding: 0 100px;
+} */
+/* #project-content{
+  width: 85%;
+  position: relative;
+  left: 7.1%;
+} */

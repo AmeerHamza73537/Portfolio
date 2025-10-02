@@ -3,8 +3,8 @@ import React from 'react'
 const Home = () => {
   return (
     <>
-        <div id='hero' className='h-200'>
-            <div id='inner-hero'>
+        <div id='hero' className='h-200 '>
+            <div id='inner-hero' className=''>
                 <p className='text-xl'>Hi! I am</p>
                 <h1 id='hero-name' className='hero-name text-[#0976CA]'>Ameer Hamza</h1>
                 <h5 id='hero-work'> A Software Engineer</h5>

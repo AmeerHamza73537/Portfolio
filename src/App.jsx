@@ -9,6 +9,7 @@ import Skills from './component/Skills.jsx'
 import Contact from './component/Contact.jsx'
 import Footer from './component/Footer.jsx'
 import Cursor from './assets/Cursor.jsx'
+import Projects from './component/Projects.jsx'
 function App() {
   
 
@@ -21,6 +22,7 @@ function App() {
       <Home/>
       <About/>
       <Skills/>
+      <Projects/>
       <Contact/>
       <Footer/>
       <Cursor/>

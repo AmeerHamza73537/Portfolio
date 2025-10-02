@@ -16,25 +16,25 @@ const Footer = () => {
               href="https://github.com/AmeerHamza73537"
               className="w-12 h-12 flex items-center justify-center rounded-full bg-zinc-800 text-white hover:bg-purple-600 transition"
             >
-              <FiGithub />
+              <FiGithub className="hover:scale-160 duration-500"/>
             </a>
             <a
               href="https://www.linkedin.com/in/ameer-hamza-63a128353/"
               className="w-12 h-12 flex items-center justify-center rounded-full bg-zinc-800 text-white hover:bg-purple-600 transition"
             >
-              <FiLinkedin />
+              <FiLinkedin className="hover:scale-160 duration-500"/>
             </a>
             <a
               href="mailto:contacthamza456@gmail.com"
               className="w-12 h-12 flex items-center justify-center rounded-full bg-zinc-800 text-white hover:bg-purple-600 transition"
             >
-              <IoMailOutline /> 
+              <IoMailOutline className="hover:scale-160 duration-500"/> 
             </a>
             <a
               href="https://leetcode.com/u/hamza756/"
               className="w-12 h-12 flex items-center justify-center rounded-full bg-zinc-800 text-white hover:bg-purple-600 transition"
             >
-              <SiLeetcode />
+              <SiLeetcode className="hover:scale-160 duration-500"/>
             </a>
           </div>
 
