@@ -26,7 +26,7 @@ import about from '../assets/about.png'
 const About = () => {
   return (
     <>
-      <section className='relative py-20 px-4 md:px-12'>
+      <section className='relative py-20 px-4 md:px-12' id='about'>
         <h1 className="text-center mb-16 text-5xl md:text-6xl lg:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600 tracking-wide">
         ABOUT ME
       </h1>

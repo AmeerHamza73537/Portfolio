@@ -1,16 +1,4 @@
 import React from 'react'
-import html from "../assets/html.png"
-import css from "../assets/css.png"
-import js from "../assets/js.png"
-import react from "../assets/react.png"
-import node from "../assets/node.png"
-import express from "../assets/express.png"
-import mongodb from "../assets/mongodb.png"
-import git from "../assets/git.png"
-import github from "../assets/github.png"
-import bootstrap from "../assets/bootstrap.png"
-import mysql from "../assets/mySQL.png"
-import tailwind from "../assets/tailwind.png"
 
 const Skills = () => {
   
@@ -26,8 +14,6 @@ const Skills = () => {
   { name: "Tailwind CSS", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg" },
   { name: "Framer Motion", icon: "https://seeklogo.com/images/F/framer-motion-logo-DA1E33CAA1-seeklogo.com.png" },
   { name: "Shadcn", icon: "https://avatars.githubusercontent.com/u/139895814?s=200&v=4" },
-  
-  
   { name: "MongoDB", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" },
   { name: "MySQL", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" },
   { name: "PostgreSQL", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" },
@@ -41,10 +27,9 @@ const Skills = () => {
   { name: "pnpm", icon: "https://seeklogo.com/images/P/pnpm-logo-AD1B2C9B4C-seeklogo.com.png" },
 ];
   
-  
     return (
     <>
-      <section className="min-h-screen flex flex-col justify-center items-center py-16 text-white">
+      <section className="min-h-screen flex flex-col justify-center items-center py-16 text-white" id='skills'>
       <div className="max-w-6xl mx-auto px-6 md:px-12">
         <h1 className="text-center mb-16 text-5xl md:text-6xl lg:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600 tracking-wide">
         TECH STACK

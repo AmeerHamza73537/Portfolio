@@ -1,6 +1,7 @@
 import React from "react";
 
 const Projects = () => {
+  
   const projects = [
     { name: "Project 1" },
     { name: "Project 2" },

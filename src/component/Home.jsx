@@ -3,7 +3,7 @@ import React from "react";
 const Home = () => {
   return (
     <section
-      id="hero"
+      id="home"
       className="relative min-h-screen flex flex-col justify-center items-center text-center text-white overflow-hidden"
     >
       {/* Falling Particles Canvas (Already in your project) */}
@@ -33,7 +33,12 @@ const Home = () => {
           Turning ideas into products through creative engineering — focused on
           solving real problems with clean, efficient execution.
         </p>
+        
       </div>
+      <a 
+          href=""
+          className="bg-gradient-to-r from-indigo-700 to-purple-700 w-full sm:w-auto py-3 px-6 rounded-xl text-white font-semibold duration-500 hover:-translate-y-1 hover:shadow-lg hover:shadow-purple-700/40"
+        >Download Resume</a>
     </section>
   );
 };
