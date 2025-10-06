@@ -1,4 +1,5 @@
 import React from "react";
+import { TbFileCv } from "react-icons/tb";
 
 const Home = () => {
   return (
@@ -29,16 +30,32 @@ const Home = () => {
           A Software Engineer
         </h5>
 
-        <p className="mt-4 text-gray-400 text-base sm:text-lg leading-relaxed">
+        <p className="my-4 text-gray-400 text-base sm:text-lg leading-relaxed">
           Turning ideas into products through creative engineering — focused on
           solving real problems with clean, efficient execution.
         </p>
         
       </div>
-      <a 
+      {/* <div className="flex items-center justify-evenly bg-gradient-to-r from-indigo-700 to-purple-700 w-full sm:w-auto py-3 px-6 rounded-xl text-white font-semibold duration-500 hover:-translate-y-1 hover:shadow-lg hover:shadow-purple-700/40">
+        <a 
           href=""
-          className="bg-gradient-to-r from-indigo-700 to-purple-700 w-full sm:w-auto py-3 px-6 rounded-xl text-white font-semibold duration-500 hover:-translate-y-1 hover:shadow-lg hover:shadow-purple-700/40"
-        >Download Resume</a>
+          className=""
+          >Download Resume        
+        </a>
+        <TbFileCv className="hidden"/>
+      </div> */}
+      <a
+  href="/resume.pdf"
+  download="Ameer-Hamza-Resume.pdf"
+  className="relative bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-lg font-medium overflow-hidden group transition-all duration-500"
+>
+  <span className="block transition-all duration-500 group-hover:translate-x-[-150%] group-hover:opacity-0">
+    Download Resume
+  </span>
+  <span className="absolute inset-0 flex justify-center items-center text-sm opacity-0 translate-x-full transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100">
+    Click to Get My CV 🚀
+  </span>
+</a>
     </section>
   );
 };

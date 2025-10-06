@@ -47,7 +47,7 @@ const Navbar = () => {
               id={item.name}
               onClick={()=>{
                 scrollToSection(item.id)
-                 setMenuOpen(false)
+                setMenuOpen(false)
               }}
             >
               <span className="relative z-10 group-hover:text-white transition-colors duration-500">
