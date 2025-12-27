@@ -1,10 +1,12 @@
 import React from "react";
-
+import mern_auth from "../projects/mern-auth";
+import mern_crud from "../projects/mern-crud";
+import {Link} from 'react-router-dom'
 const Projects = () => {
   
   const projects = [
-    { name: "Project 1" },
-    { name: "Project 2" },
+    { name: "MERN AUTHENTICATION SYSTEM", path:"/mern-auth"},
+    { name: "MERN CRUD APPLICATION", path:"mern-crud"},
     { name: "Project 3" },
     { name: "Project 4" },
     { name: "Project 5" },
@@ -27,17 +29,16 @@ const Projects = () => {
             key={index}
             className="border-b border-[#6D6A6A] pb-4"
           >
-            <a
-              href="#"
+            <Link
+              to="{project.path}"
               className="block text-3xl md:text-4xl lg:text-5xl text-white hover:text-[#6D6A6A] transition-colors duration-300"
             >
               {project.name}
-            </a>
+            </Link>
           </div>
         ))}
       </div>
     </section>
   );
 };
-
 export default Projects;
