@@ -8,7 +8,14 @@
  body{
   background-color: black;
   color: white;
+  cursor: none;
  }
+ input, textarea {
+  cursor: text; /* inputs me normal cursor dikhe */
+}
+body:hover{
+  cursor: none;
+}
 
  /* index.css */
 .scrollbar-hide::-webkit-scrollbar {
