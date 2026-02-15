@@ -7,7 +7,7 @@ export const projectData = [
     demo: "",
     path: "/projects/mern-crud",
     description:
-      "Job Nest is a modern job portal web application where users can both post jobs and apply for jobs using a single account.It is designed to remove platform fragmentation, reduce repetitive resume uploads, and streamline employer-candidate communication."
+      "Job Nest is a modern job portal web application where users can both post jobs and apply for jobs using a single account. It is designed to remove platform fragmentation, and streamline employer-candidate communication. The platform streamlines hiring workflows by combining job discovery, application submission, and communication into one seamless system."
   }, 
   {
     id: "home-scape",
