@@ -1,6 +1,15 @@
 // src/data/projects.js
 export const projectData = [
-   {
+  {
+    id: "job-nest",
+    name: "JobNest",
+    github: "https://github.com/AmeerHamza73537/JOB-NEST",
+    demo: "",
+    path: "/projects/mern-crud",
+    description:
+      "Job Nest is a modern job portal web application where users can both post jobs and apply for jobs using a single account.It is designed to remove platform fragmentation, reduce repetitive resume uploads, and streamline employer-candidate communication."
+  }, 
+  {
     id: "home-scape",
     name: "HomeScape",
     github: "https://github.com/AmeerHamza73537/Real-Estate-Project",
