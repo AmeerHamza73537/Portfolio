@@ -4,20 +4,33 @@ import about from '../assets/about.png'
 
 const About = () => {
   return (
-    <section className="relative min-h-screen py-20 px-4 md:px-12" id="about">
+    <section 
+      className="relative min-h-screen py-16 sm:py-20 md:py-24 px-4 sm:px-6 md:px-12 overflow-hidden" 
+      id="about"
+    >
       
       {/* Big background heading */}
-      <h1 className="absolute top-[-60px] left-1/2 -translate-x-1/2 text-[160px] md:text-[220px] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600 select-none pointer-events-none whitespace-nowrap z-0 opacity-30">
+      <h1 className="absolute top-[-30px] sm:top-[-50px] md:top-[-60px] 
+      left-1/2 -translate-x-1/2 
+      text-[70px] sm:text-[110px] md:text-[160px] lg:text-[220px] 
+      font-extrabold text-transparent bg-clip-text 
+      bg-gradient-to-r from-purple-600 to-indigo-600 
+      select-none pointer-events-none whitespace-nowrap 
+      z-0 opacity-20 sm:opacity-25 md:opacity-30">
         ABOUT ME
       </h1>
 
-   
-
-      <div className="about-content flex flex-col lg:flex-row items-center gap-10 lg:gap-16 max-w-6xl mx-auto px-6 md:px-12 lg:px-20 relative z-10">
+      <div className="about-content 
+      flex flex-col lg:flex-row 
+      items-center 
+      gap-10 lg:gap-16 
+      max-w-7xl mx-auto 
+      px-4 sm:px-6 md:px-12 lg:px-20 
+      relative z-10">
 
         {/* Image Section */}
         <motion.div 
-          className="image w-full md:w-1/2 flex justify-center"
+          className="image w-full lg:w-1/2 flex justify-center"
           initial={{ opacity: 0, y: 80 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -26,13 +39,23 @@ const About = () => {
           <img 
             src={about} 
             alt="About" 
-            className="rounded-3xl shadow-2xl shadow-purple-800/30 hover:scale-105 transition-transform duration-700 object-cover max-w-[400px] md:max-w-[500px]" 
+            className="rounded-3xl 
+            shadow-2xl shadow-purple-800/30 
+            hover:scale-105 
+            transition-transform duration-700 
+            object-cover 
+            w-[280px] sm:w-[340px] md:w-[400px] lg:w-[480px] xl:w-[520px]" 
           />
         </motion.div>
 
         {/* Text Section */}
         <motion.div 
-          className="w-full md:w-1/2 text-gray-300 leading-relaxed text-lg md:text-xl space-y-6"
+          className="w-full lg:w-1/2 
+          text-gray-300 
+          leading-relaxed 
+          text-base sm:text-lg md:text-xl 
+          space-y-5 sm:space-y-6 
+          text-center lg:text-left"
           initial={{ opacity: 0, y: 80 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}

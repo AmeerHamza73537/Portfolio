@@ -23,16 +23,39 @@ const Skills = () => {
   ];
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-center items-center py-16 text-white" id="skills">
-      <div className="max-w-6xl mx-auto px-6 md:px-12 relative z-10">
+    <section
+      className="relative min-h-screen flex flex-col justify-center items-center 
+                 py-12 sm:py-16 md:py-20 text-white overflow-hidden"
+      id="skills"
+    >
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-12 relative z-10">
 
-        {/* Big background heading behind stacks */}
-        <h1 className="absolute top-[-200px] left-1/2 -translate-x-1/2 text-[160px] md:text-[220px] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600 select-none pointer-events-none whitespace-nowrap opacity-30 z-0">
+        {/* Responsive Background Heading */}
+        <h1
+          className="absolute 
+                     top-[-80px] sm:top-[-120px] md:top-[-160px] lg:top-[-200px]
+                     left-1/2 -translate-x-1/2 
+                     text-[60px] sm:text-[100px] md:text-[160px] lg:text-[220px] xl:text-[260px]
+                     font-extrabold text-transparent bg-clip-text 
+                     bg-gradient-to-r from-purple-600 to-indigo-600 
+                     select-none pointer-events-none whitespace-nowrap 
+                     opacity-20 sm:opacity-25 md:opacity-30 z-0"
+        >
           TECH STACK
         </h1>
 
-        {/* Skills Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 place-items-center relative z-10">
+        {/* Fully Responsive Grid */}
+        <div
+          className="grid 
+                     grid-cols-2 
+                     xs:grid-cols-2 
+                     sm:grid-cols-3 
+                     md:grid-cols-4 
+                     lg:grid-cols-5 
+                     xl:grid-cols-6 
+                     gap-4 sm:gap-6 md:gap-8 
+                     place-items-center relative z-10"
+        >
           {skills.map((skill, index) => (
             <motion.div
               key={index}
@@ -57,25 +80,38 @@ const Skills = () => {
                 card.style.transform = `perspective(1000px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+                e.currentTarget.style.transform =
+                  'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
               }}
-              className="flex flex-col items-center justify-center w-28 h-28 sm:w-32 sm:h-32 
-                         bg-[#111]/30 backdrop-blur-lg rounded-2xl border border-white/10 
-                         hover:bg-blue-900/40 hover:border-blue-400 shadow-md shadow-purple-900/20 
+              className="flex flex-col items-center justify-center
+                         w-20 h-20
+                         sm:w-24 sm:h-24
+                         md:w-28 md:h-28
+                         lg:w-32 lg:h-32
+                         bg-[#111]/30 backdrop-blur-lg rounded-2xl 
+                         border border-white/10 
+                         hover:bg-blue-900/40 hover:border-blue-400 
+                         shadow-md shadow-purple-900/20 
                          transition-all duration-500 cursor-pointer"
             >
               <img
                 src={skill.icon}
                 alt={skill.name}
-                className="w-10 h-10 sm:w-12 sm:h-12 transition-transform duration-500 hover:scale-110"
+                className="w-6 h-6 
+                           sm:w-8 sm:h-8 
+                           md:w-10 md:h-10 
+                           lg:w-12 lg:h-12 
+                           transition-transform duration-500 hover:scale-110"
               />
-              <span className="text-sm mt-2">{skill.name}</span>
+              <span className="text-[10px] sm:text-xs md:text-sm mt-1 sm:mt-2 text-center">
+                {skill.name}
+              </span>
             </motion.div>
           ))}
         </div>
       </div>
     </section>
   );
-}
+};
 
 export default Skills;
