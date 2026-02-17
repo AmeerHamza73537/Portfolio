@@ -90,7 +90,7 @@ const Skills = () => {
                          lg:w-32 lg:h-32
                          bg-[#111]/30 backdrop-blur-lg rounded-2xl 
                          border border-white/10 
-                         hover:bg-blue-900/40 hover:border-blue-400 
+                         hover:bg-purple-500/30 hover:border-purple-400 
                          shadow-md shadow-purple-900/20 
                          transition-all duration-500 cursor-pointer"
             >
