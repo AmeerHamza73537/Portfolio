@@ -16,14 +16,9 @@ const Projects = () => {
     >
       {/* Background Huge Text */}
       <h1
-        className="absolute
-        top-[-20px] sm:top-[-40px] md:top-[-50px]
-        left-1/2 -translate-x-1/2
-        text-[60px] sm:text-[100px] md:text-[140px] lg:text-[180px]
-        font-extrabold text-white/5
-        select-none pointer-events-none tracking-widest
-        bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600
-        opacity-20 sm:opacity-25 md:opacity-30"
+        className="
+        absolute top-[-20px] sm:top-[-40px] md:top-[-50px] left-1/2 -translate-x-1/2 text-[60px] sm:text-[100px] md:text-[140px] lg:text-[180px] font-extrabold text-white/5 select-none pointer-events-none tracking-widest bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600 opacity-20 sm:opacity-25 md:opacity-30
+        "
       >
         PROJECTS
       </h1>

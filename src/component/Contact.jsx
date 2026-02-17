@@ -52,20 +52,22 @@ const Contact = () => {
     <section
       id="contact"
       className="relative min-h-screen flex flex-col justify-center
-      py-16 sm:py-20 md:py-24
-      px-4 sm:px-6 md:px-12
-      max-w-7xl mx-auto overflow-hidden"
+  py-16 sm:py-20 md:py-24
+  px-4 sm:px-6 md:px-12
+  overflow-hidden"
     >
+
       {/* Background CONTACT Text */}
       <h1
         className="absolute
-        right-1/2 translate-x-1/2 md:right-0 md:translate-x-0
-        top-[-20px] sm:top-[-40px] md:top-[-80px]
-        text-[70px] sm:text-[120px] md:text-[160px] lg:text-[220px]
-        font-extrabold text-transparent bg-clip-text
-        bg-gradient-to-r from-purple-600 to-indigo-600
-        select-none pointer-events-none whitespace-nowrap
-        opacity-20 sm:opacity-25 md:opacity-30"
+  top-[-20px] sm:top-[-40px] md:top-[-50px]
+  left-1/2 -translate-x-1/2
+  text-[60px] sm:text-[100px] md:text-[140px] lg:text-[180px]
+  font-extrabold text-white/5
+  select-none pointer-events-none tracking-widest
+  bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600
+  opacity-20 sm:opacity-25 md:opacity-30
+  z-0"
       >
         CONTACT
       </h1>

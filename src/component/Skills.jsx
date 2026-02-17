@@ -33,15 +33,15 @@ const Skills = () => {
         {/* Responsive Background Heading */}
         <h1
           className="absolute 
-                     top-[-80px] sm:top-[-120px] md:top-[-160px] lg:top-[-200px]
-                     left-1/2 -translate-x-1/2 
-                     text-[60px] sm:text-[100px] md:text-[160px] lg:text-[220px] xl:text-[260px]
-                     font-extrabold text-transparent bg-clip-text 
-                     bg-gradient-to-r from-purple-600 to-indigo-600 
-                     select-none pointer-events-none whitespace-nowrap 
-                     opacity-20 sm:opacity-25 md:opacity-30 z-0"
+             top-[-50px] sm:top-[-100px] md:top-[-120px] lg:top-[-180px]
+             left-1/2 -translate-x-1/2 
+             text-[60px] sm:text-[60px] md:text-[110px] lg:text-[140px] xl:text-[200px]
+             font-extrabold text-transparent bg-clip-text 
+             bg-gradient-to-r from-purple-600 to-indigo-600 
+             select-none pointer-events-none whitespace-nowrap 
+             opacity-35 sm:opacity-20 md:opacity-25 z-0"
         >
-          TECH STACK
+          MY STACK
         </h1>
 
         {/* Fully Responsive Grid */}
