@@ -12,8 +12,12 @@ import Footer from "./component/Footer.jsx";
 import Cursor from "./assets/Cursor.jsx";
 import Projects from "./component/Projects.jsx";
 
-import MernAuth from "./projects/mern-auth.jsx";
-import MernCrud from "./projects/mern-crud.jsx";
+// individual project detail pages
+import JobNest from "./project/JobNest.jsx";
+import HomeScape from "./project/HomeScape.jsx";
+import Authify from "./project/Authify.jsx";
+import SwiftManage from "./project/SwiftManage.jsx";
+import CourseHub from "./project/CourseHub.jsx";
 
 function App() {
   return (
@@ -40,8 +44,11 @@ function App() {
           />
 
           {/* Project Detail Pages */}
-          <Route path="/mern-auth" element={<MernAuth />} />
-          <Route path="/mern-crud" element={<MernCrud />} />
+          <Route path="/projects/job-nest" element={<JobNest />} />
+          <Route path="/projects/home-scape" element={<HomeScape />} />
+          <Route path="/projects/authify" element={<Authify />} />
+          <Route path="/projects/swiftmanage" element={<SwiftManage />} />
+          <Route path="/projects/course-hub" element={<CourseHub />} />
         </Routes>
 
         <Cursor />
