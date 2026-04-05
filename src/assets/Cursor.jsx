@@ -1,61 +1,78 @@
-import { useEffect, useState } from "react";
-import React from "react";
-export default function Cursor() {
-  const [dotPos, setDotPos] = useState({ x: 0, y: 0 });
-  const [circlePos, setCirclePos] = useState({ x: 0, y: 0 });
-  const [hovering, setHovering] = useState(false);
+import React, { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
 
-  // Cursor position update
+export default function Cursor() {
+  const dotRef = useRef(null);
+  const followerRef = useRef(null);
+  const xTo = useRef(null);
+  const yTo = useRef(null);
+  const fxTo = useRef(null);
+  const fyTo = useRef(null);
+  const [enabled, setEnabled] = useState(false);
+
   useEffect(() => {
-    const moveHandler = (e) => {
-      setDotPos({ x: e.clientX, y: e.clientY });
+    const fine = window.matchMedia("(pointer: fine)").matches;
+    const touch = "ontouchstart" in window;
+    setEnabled(fine && !touch);
+  }, []);
+
+  useEffect(() => {
+    if (!enabled) return undefined;
+
+    const dot = dotRef.current;
+    const follower = followerRef.current;
+    if (!dot || !follower) return undefined;
+
+    gsap.set(dot, { xPercent: -50, yPercent: -50 });
+    gsap.set(follower, { xPercent: -50, yPercent: -50 });
+
+    xTo.current = gsap.quickTo(dot, "x", { duration: 0.05, ease: "none" });
+    yTo.current = gsap.quickTo(dot, "y", { duration: 0.05, ease: "none" });
+    fxTo.current = gsap.quickTo(follower, "x", { duration: 0.5, ease: "power3.out" });
+    fyTo.current = gsap.quickTo(follower, "y", { duration: 0.5, ease: "power3.out" });
+
+    const move = (e) => {
+      xTo.current(e.clientX);
+      yTo.current(e.clientY);
+      fxTo.current(e.clientX);
+      fyTo.current(e.clientY);
     };
 
-    window.addEventListener("mousemove", moveHandler);
+    const onEnter = () => {
+      follower.classList.add("is-hover");
+      gsap.to(follower, { scale: 2, duration: 0.35, ease: "power2.out" });
+    };
+
+    const onLeave = () => {
+      follower.classList.remove("is-hover");
+      gsap.to(follower, { scale: 1, duration: 0.35, ease: "power2.out" });
+    };
+
+    window.addEventListener("mousemove", move);
+
+    const interactive = document.querySelectorAll("a, button, [role='button'], input, textarea");
+    interactive.forEach((el) => {
+      el.addEventListener("mouseenter", onEnter);
+      el.addEventListener("mouseleave", onLeave);
+    });
 
     return () => {
-      window.removeEventListener("mousemove", moveHandler);
+      window.removeEventListener("mousemove", move);
+      interactive.forEach((el) => {
+        el.removeEventListener("mouseenter", onEnter);
+        el.removeEventListener("mouseleave", onLeave);
+      });
     };
-  }, []);
+  }, [enabled]);
 
-  // Smooth trailing for circle
-  useEffect(() => {
-    const follow = () => {
-      setCirclePos((prev) => ({
-        x: prev.x + (dotPos.x - prev.x) * 0.1,
-        y: prev.y + (dotPos.y - prev.y) * 0.1,
-      }));
-      requestAnimationFrame(follow);
-    };
-    follow();
-  }, [dotPos]);
-
-  // Detect hover on links & buttons
-  useEffect(() => {
-    const targets = document.querySelectorAll("a, button");
-    targets.forEach((el) => {
-      el.addEventListener("mouseenter", () => setHovering(true));
-      el.addEventListener("mouseleave", () => setHovering(false));
-    });
-  }, []);
+  if (!enabled) {
+    return null;
+  }
 
   return (
     <>
-      {/* Small Dot */}
-      <div
-        className="fixed top-0 left-0 w-2 h-2 rounded-full bg-white pointer-events-none z-[9999]"
-        style={{ transform: `translate(${dotPos.x}px, ${dotPos.y}px)` }}
-      />
-
-      {/* Big Circle */}
-      <div
-        className={`fixed top-0 left-0 rounded-full pointer-events-none z-[9998] transition-all duration-300 ease-out ${
-          hovering ? "w-16 h-16 bg-purple-500/30" : "w-10 h-10 bg-purple-500/20"
-        }`}
-        style={{
-          transform: `translate(${circlePos.x - 20}px, ${circlePos.y - 20}px)`,
-        }}
-      />
+      <div ref={dotRef} className="cursor-dot" aria-hidden="true" />
+      <div ref={followerRef} className="cursor-follower" aria-hidden="true" />
     </>
   );
 }

@@ -1,61 +1,79 @@
-import React from "react";
-import { TbFileCv } from "react-icons/tb";
+import React, { useLayoutEffect, useRef } from "react";
+import gsap from "gsap";
 
 const Home = () => {
+  const rootRef = useRef(null);
+  const glowRef = useRef(null);
+
+  useLayoutEffect(() => {
+    const glow = glowRef.current;
+    if (glow) {
+      const drift = gsap.to(glow, {
+        x: 30,
+        y: 20,
+        duration: 6,
+        yoyo: true,
+        repeat: -1,
+        ease: "sine.inOut",
+      });
+      return () => drift.kill();
+    }
+    return undefined;
+  }, []);
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.set(".hero-subtitle", { autoAlpha: 0, y: 32 });
+      gsap.set(".hero-tagline", { autoAlpha: 0, y: 36 });
+      gsap.set(".hero-resume-btn", { autoAlpha: 0, scale: 0.8 });
+
+      const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
+      tl.from(".hero-greeting", { autoAlpha: 0, duration: 0.55 }, 0);
+      /* Full line as one element — per-char background-clip:text clips italic “A” */
+      tl.from(
+        ".hero-name-row",
+        { autoAlpha: 0, y: 28, duration: 0.9, ease: "power3.out" },
+        0.28
+      );
+      tl.to(".hero-subtitle", { autoAlpha: 1, y: 0, duration: 0.75, ease: "power3.out" }, 0.85);
+      tl.to(".hero-tagline", { autoAlpha: 1, y: 0, duration: 0.75, ease: "power3.out" }, 1.35);
+      tl.to(
+        ".hero-resume-btn",
+        { autoAlpha: 1, scale: 1, duration: 0.65, ease: "back.out(1.25)" },
+        1.85
+      );
+    }, rootRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section
-      id="home"
-      className="relative min-h-screen flex flex-col justify-center items-center text-center text-white overflow-hidden"
-    >
-      {/* Falling Particles Canvas (Already in your project) */}
-      <canvas
-        id="bg-canvas"
-        className="absolute inset-0 w-full h-full z-0 pointer-events-none"
-      ></canvas>
-
-      {/* Subtle Glow Overlay */}
-      <div className="absolute w-[500px] h-[500px] bg-indigo-700/20 blur-[160px] rounded-full top-1/3 left-1/2 -translate-x-1/2 -z-0"></div>
-
-      {/* Hero Content */}
-      <div className="relative z-10 px-6 sm:px-12 max-w-3xl">
-        <p className="text-indigo-400 text-lg sm:text-xl font-medium tracking-wide mb-2">
-          Hi! I am
-        </p>
-
-        <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold bg-gradient-to-r from-indigo-400 via-purple-500 to-blue-400 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(79,70,229,0.4)]">
-          Ameer Hamza
-        </h1>
-
-        <h5 className="text-2xl sm:text-3xl text-indigo-300 mt-3 font-semibold">
-          A Software Engineer
-        </h5>
-
-        <p className="my-4 text-gray-400 text-base sm:text-lg leading-relaxed">
-          Turning ideas into products through creative engineering — focused on
-          solving real problems with clean, efficient execution.
-        </p>
-        
+    <section id="home" ref={rootRef} className="hero-section section-divider">
+      <div className="hero-glow-wrap" aria-hidden="true">
+        <div ref={glowRef} className="hero-glow" />
       </div>
-      {/* <div className="flex items-center justify-evenly bg-gradient-to-r from-indigo-700 to-purple-700 w-full sm:w-auto py-3 px-6 rounded-xl text-white font-semibold duration-500 hover:-translate-y-1 hover:shadow-lg hover:shadow-purple-700/40">
-        <a 
-          href=""
-          className=""
-          >Download Resume        
-        </a>
-        <TbFileCv className="hidden"/>
-      </div> */}
+
+      <div className="hero-inner">
+        <p className="hero-greeting">Hi! I am</p>
+
+        <h1 className="hero-name-row m-0">Ameer Hamza</h1>
+
+        <h2 className="hero-subtitle m-0">A Software Engineer</h2>
+
+        <p className="hero-tagline">
+          Turning ideas into products through creative engineering — focused on solving real
+          problems with clean, efficient execution.
+        </p>
+      </div>
+
       <a
-  href="/resume.pdf"
-  download="Ameer-Hamza-Resume.pdf"
-  className="relative bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-lg font-medium overflow-hidden group transition-all duration-500"
->
-  <span className="block transition-all duration-500 group-hover:translate-x-[-150%] group-hover:opacity-0">
-    Download Resume
-  </span>
-  <span className="absolute inset-0 flex justify-center items-center text-sm opacity-0 translate-x-full transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100">
-    Click to Get My CV 🚀
-  </span>
-</a>
+        href="/resume.pdf"
+        download="Ameer-Hamza-Resume.pdf"
+        className="hero-resume-btn relative z-[1]"
+      >
+        <span className="hr-a block">Download Resume</span>
+        <span className="hr-b text-sm">Click to Get My CV 🚀</span>
+      </a>
     </section>
   );
 };

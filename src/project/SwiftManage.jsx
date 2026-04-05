@@ -1,46 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { projectData } from "./ProjectData.jsx";
-import { motion } from "framer-motion";
-import { useEffect } from "react";
 
 const SwiftManage = () => {
   const project = projectData.find((p) => p.id === "swiftmanage");
-
-  if (!project) {
-    return <div className="text-center text-white mt-20">Project not found</div>;
-  }
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  if (!project) {
+    return (
+      <div className="text-center text-[#f5f0e8] mt-24 pt-24 font-['DM_Sans',sans-serif]">
+        Project not found
+      </div>
+    );
+  }
+
   return (
-    <section className="min-h-screen px-6 py-24 text-white relative z-10">
-      
+    <section className="min-h-screen px-6 py-24 text-[#f5f0e8] relative z-10 pt-28">
       <div className="max-w-5xl mx-auto">
+        <div className="project-detail-card">
+          <h1 className="project-detail-title">{project.name}</h1>
 
-        {/* Glass Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-10 shadow-[0_0_40px_rgba(168,85,247,0.2)]"
-        >
-          
-          {/* Title */}
-          <h1 className="text-5xl font-extrabold text-center bg-gradient-to-r from-purple-400 to-indigo-500 bg-clip-text text-transparent mb-6">
-            {project.name}
-          </h1>
-
-          {/* Buttons */}
           <div className="flex justify-center gap-6 flex-wrap mb-10">
             <a
               href={project.github}
               target="_blank"
               rel="noreferrer"
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 
-              hover:scale-105 hover:shadow-lg hover:shadow-purple-500/40 
-              transition duration-300"
+              className="project-detail-primary inline-block"
             >
               ⚙️ View Code
             </a>
@@ -50,35 +37,26 @@ const SwiftManage = () => {
                 href={project.demo}
                 target="_blank"
                 rel="noreferrer"
-                className="px-6 py-3 rounded-xl border border-indigo-400 
-                hover:bg-indigo-500/10 hover:scale-105 
-                transition duration-300"
+                className="project-detail-ghost inline-block"
               >
                 🌐 Live Demo
               </a>
             )}
           </div>
 
-          {/* Description */}
-          <p className="text-gray-300 text-lg leading-relaxed text-center mb-12 max-w-3xl mx-auto">
+          <p className="text-[#7a7a7a] text-lg leading-relaxed text-center mb-12 max-w-3xl mx-auto font-['DM_Sans',sans-serif]">
             {project.detailDescription}
           </p>
 
-          {/* Technologies */}
           {project.technologies?.length > 0 && (
             <>
-              <h2 className="text-3xl font-semibold text-center mb-6">
+              <h2 className="text-3xl font-semibold text-center mb-6 font-['DM_Sans',sans-serif] text-[#f5f0e8]">
                 ⚡ Technologies Used
               </h2>
 
               <div className="flex flex-wrap justify-center gap-4 mb-14">
                 {project.technologies.map((tech) => (
-                  <span
-                    key={tech}
-                    className="px-5 py-2 rounded-full bg-white/10 border border-white/20 
-                    hover:bg-purple-600/20 hover:border-purple-400 
-                    transition duration-300 text-sm tracking-wide"
-                  >
+                  <span key={tech} className="tech-pill">
                     {tech}
                   </span>
                 ))}
@@ -86,33 +64,22 @@ const SwiftManage = () => {
             </>
           )}
 
-          {/* Screenshots */}
           {project.screenshots?.length > 0 && (
             <>
-              <h2 className="text-3xl font-semibold text-center mb-8">
+              <h2 className="text-3xl font-semibold text-center mb-8 font-['DM_Sans',sans-serif] text-[#f5f0e8]">
                 📸 Project Preview
               </h2>
 
               <div className="grid md:grid-cols-2 gap-8">
                 {project.screenshots.map((src, index) => (
-                  <div
-                    key={index}
-                    className="overflow-hidden rounded-2xl border border-white/10 
-                    hover:shadow-2xl hover:shadow-purple-500/30 
-                    transition duration-500"
-                  >
-                    <img
-                      src={src}
-                      alt={`${project.name} screenshot ${index + 1}`}
-                      className="w-full h-full object-cover hover:scale-110 transition duration-500"
-                    />
+                  <div key={index} className="project-shot">
+                    <img src={src} alt={`${project.name} screenshot ${index + 1}`} />
                   </div>
                 ))}
               </div>
             </>
           )}
-
-        </motion.div>
+        </div>
       </div>
     </section>
   );

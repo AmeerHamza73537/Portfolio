@@ -1,58 +1,76 @@
-import React from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import { FiGithub } from "react-icons/fi";
 import { FiLinkedin } from "react-icons/fi";
-import { CiMail } from "react-icons/ci";
 import { IoMailOutline } from "react-icons/io5";
 import { SiLeetcode } from "react-icons/si";
+import gsap from "gsap";
 
 const Footer = () => {
+  const footerRef = useRef(null);
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      /* Opacity only — y stagger left icons at different translateY (jagged row) */
+      gsap.from(".footer-icon", {
+        autoAlpha: 0,
+        stagger: 0.08,
+        duration: 0.55,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: "footer.site-footer",
+          start: "top 88%",
+        },
+      });
+    }, footerRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <>
-      <footer className=" bg-black border-t border-[#3c3736] text-gray-400 py-8">
-        <div className="flex flex-col items-center space-y-6">
-          {/* Social Icons */}
-          <div className="flex space-x-6">
-            <a
-              href="https://github.com/AmeerHamza73537"
-              className="w-12 h-12 flex items-center justify-center rounded-full bg-zinc-800 text-white hover:bg-purple-600 transition"
-            >
-              <FiGithub className="hover:scale-160 duration-500"/>
-            </a>
-            <a
-              href="https://www.linkedin.com/in/ameer-hamza-63a128353/"
-              className="w-12 h-12 flex items-center justify-center rounded-full bg-zinc-800 text-white hover:bg-purple-600 transition"
-            >
-              <FiLinkedin className="hover:scale-160 duration-500"/>
-            </a>
-            <a
-              href="mailto:contacthamza456@gmail.com"
-              className="w-12 h-12 flex items-center justify-center rounded-full bg-zinc-800 text-white hover:bg-purple-600 transition"
-            >
-              <IoMailOutline className="hover:scale-160 duration-500"/> 
-            </a>
-            <a
-              href="https://leetcode.com/u/hamza756/"
-              className="w-12 h-12 flex items-center justify-center rounded-full bg-zinc-800 text-white hover:bg-purple-600 transition"
-            >
-              <SiLeetcode className="hover:scale-160 duration-500"/>
-            </a>
-          </div>
-
-          {/* Divider with dot */}
-          <div className="flex items-center space-x-3">
-            <span className="w-32 h-px bg-gray-700"></span>
-            <span className="w-2 h-2 rounded-full bg-purple-600"></span>
-            <span className="w-32 h-px bg-gray-700"></span>
-          </div>
-
-          {/* Copyright */}
-          <p className="text-sm text-gray-400">
-            © 2025 <span className="text-purple-500">Ameer Hamza</span>. All
-            Rights Reserved.
-          </p>
+    <footer ref={footerRef} className="site-footer overflow-x-visible bg-[#0c0c0c] border-t border-[#1e1e1e] text-[#7a7a7a] py-10 section-divider">
+      <div className="flex flex-col items-center space-y-6 overflow-visible">
+        <div className="footer-icons-row">
+          <a
+            href="https://github.com/AmeerHamza73537"
+            className="footer-icon"
+            aria-label="GitHub"
+          >
+            <FiGithub className="w-5 h-5" />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/ameer-hamza-63a128353/"
+            className="footer-icon"
+            aria-label="LinkedIn"
+          >
+            <FiLinkedin className="w-5 h-5" />
+          </a>
+          <a
+            href="mailto:contacthamza456@gmail.com"
+            className="footer-icon"
+            aria-label="Email"
+          >
+            <IoMailOutline className="w-5 h-5" />
+          </a>
+          <a
+            href="https://leetcode.com/u/hamza756/"
+            className="footer-icon"
+            aria-label="LeetCode"
+          >
+            <SiLeetcode className="w-5 h-5" />
+          </a>
         </div>
-      </footer>
-    </>
+
+        <div className="flex items-center space-x-3">
+          <span className="w-32 h-px bg-[#242424]" />
+          <span className="w-2 h-2 rounded-sm bg-[#e8c547]" />
+          <span className="w-32 h-px bg-[#242424]" />
+        </div>
+
+        <p className="footer-copy text-sm text-[#7a7a7a] font-['DM_Sans',sans-serif] text-center">
+          © 2026 <span className="text-[#e8c547] inline-block">Ameer Hamza</span>. All Rights Reserved.
+        </p>
+      </div>
+    </footer>
   );
 };
 
