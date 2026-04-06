@@ -24,6 +24,20 @@ const Contact = () => {
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
+      gsap.from(".contact-section .font-mono-label", {
+        autoAlpha: 0,
+        y: 18,
+        duration: 0.5,
+        ease: "power2.out",
+        immediateRender: false,
+        scrollTrigger: {
+          trigger: ".contact-section",
+          start: "top 85%",
+          toggleActions: "play none none none",
+          once: true,
+        },
+      });
+
       gsap.from(".contact-heading-word", {
         autoAlpha: 0,
         rotationX: 90,
@@ -31,9 +45,26 @@ const Contact = () => {
         duration: 0.85,
         ease: "power3.out",
         transformOrigin: "50% 100%",
+        immediateRender: false,
         scrollTrigger: {
-          trigger: "#contact .contact-heading",
-          start: "top 75%",
+          trigger: ".contact-section",
+          start: "top 85%",
+          toggleActions: "play none none none",
+          once: true,
+        },
+      });
+
+      gsap.from(".contact-form", {
+        autoAlpha: 0,
+        y: 40,
+        duration: 0.8,
+        ease: "power2.out",
+        immediateRender: false,
+        scrollTrigger: {
+          trigger: ".contact-form",
+          start: "top 85%",
+          toggleActions: "play none none none",
+          once: true,
         },
       });
     }, sectionRef);
@@ -75,16 +106,16 @@ const Contact = () => {
     <section
       ref={sectionRef}
       id="contact"
-      className="relative flex flex-col justify-center section-pad section-divider overflow-hidden"
+      className="contact-section relative flex flex-col justify-center section-pad section-divider overflow-hidden"
     >
       <div className="site-container">
-        <p className="font-mono-label mb-8 md:mb-10">— 04. CONTACT</p>
+        <p className="font-mono-label mb-8 md:mb-10 animate-on-scroll">— 04. CONTACT</p>
 
         <div className="flex flex-col lg:flex-row justify-between items-stretch gap-12 lg:gap-16 relative z-10">
           <div className="w-full lg:w-1/2 px-1 sm:px-2 text-center lg:text-left text-[#f5f0e8] space-y-4">
-            <h2 className="contact-heading text-2xl sm:text-3xl md:text-4xl font-bold m-0 font-['DM_Sans',sans-serif]">
+            <h2 className="contact-heading text-2xl sm:text-3xl md:text-4xl font-bold m-0 font-['DM_Sans',sans-serif] animate-on-scroll">
               {HEADING_WORDS.map((word, i) => (
-                <span key={i} className="contact-heading-word">
+                <span key={i} className="contact-heading-word word animate-on-scroll">
                   {word}
                 </span>
               ))}
@@ -105,7 +136,7 @@ const Contact = () => {
             </a>
           </div>
 
-          <div className="contact-form-shell w-full lg:w-1/2 max-w-2xl mx-auto lg:mx-0">
+          <div className="contact-form contact-form-shell animate-on-scroll w-full lg:w-1/2 max-w-2xl mx-auto lg:mx-0">
             <form className="flex flex-col gap-4 sm:gap-5" onSubmit={handleSubmit(onSubmit)}>
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex-1">

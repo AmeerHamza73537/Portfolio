@@ -44,7 +44,12 @@ function ProjectDetail() {
         y: 28,
         stagger: 0.08,
         duration: 0.6,
-        scrollTrigger: { trigger: ".case-overview-strip", start: "top 80%" },
+        scrollTrigger: {
+          trigger: ".case-overview-strip",
+          start: "top 85%",
+          toggleActions: "play none none none",
+          once: true,
+        },
       });
 
       const monthsObj = { value: 0 };
@@ -52,7 +57,12 @@ function ProjectDetail() {
         value: project.timelineMonths || 3,
         duration: 1.1,
         ease: "power2.out",
-        scrollTrigger: { trigger: ".case-overview-strip", start: "top 80%" },
+        scrollTrigger: {
+          trigger: ".case-overview-strip",
+          start: "top 85%",
+          toggleActions: "play none none none",
+          once: true,
+        },
         onUpdate: () => {
           const el = document.querySelector(".timeline-counter");
           if (el) el.textContent = `${Math.round(monthsObj.value)} Months`;
@@ -66,14 +76,24 @@ function ProjectDetail() {
           clipPath: "inset(0 0% 0 0)",
           duration: 1,
           ease: "power3.out",
-          scrollTrigger: { trigger: ".case-problem", start: "top 78%" },
+          scrollTrigger: {
+            trigger: ".case-problem",
+            start: "top 85%",
+            toggleActions: "play none none none",
+            once: true,
+          },
         }
       );
       gsap.from(".pull-quote", {
         autoAlpha: 0,
         scale: 0.96,
         duration: 0.8,
-        scrollTrigger: { trigger: ".pull-quote", start: "top 85%" },
+        scrollTrigger: {
+          trigger: ".pull-quote",
+          start: "top 85%",
+          toggleActions: "play none none none",
+          once: true,
+        },
       });
 
       gsap.from(".feature-item", {
@@ -82,7 +102,12 @@ function ProjectDetail() {
         stagger: 0.1,
         duration: 0.6,
         ease: "power2.out",
-        scrollTrigger: { trigger: ".features-list", start: "top 80%" },
+        scrollTrigger: {
+          trigger: ".features-list",
+          start: "top 85%",
+          toggleActions: "play none none none",
+          once: true,
+        },
       });
 
       gsap.from(".tech-chip", {
@@ -92,7 +117,12 @@ function ProjectDetail() {
         stagger: 0.08,
         ease: "expo.out",
         clearProps: "transform,opacity",
-        scrollTrigger: { trigger: ".case-stack", start: "top 80%", toggleActions: "play none none none" },
+        scrollTrigger: {
+          trigger: ".tech-chip-wrap",
+          start: "top 85%",
+          toggleActions: "play none none none",
+          once: true,
+        },
       });
 
       gsap.from(".challenge-card-left", {
@@ -100,14 +130,24 @@ function ProjectDetail() {
         autoAlpha: 0,
         duration: 1,
         ease: "power3.out",
-        scrollTrigger: { trigger: ".case-learnings", start: "top 75%" },
+        scrollTrigger: {
+          trigger: ".case-learnings",
+          start: "top 85%",
+          toggleActions: "play none none none",
+          once: true,
+        },
       });
       gsap.from(".challenge-card-right", {
         x: 60,
         autoAlpha: 0,
         duration: 1,
         ease: "power3.out",
-        scrollTrigger: { trigger: ".case-learnings", start: "top 75%" },
+        scrollTrigger: {
+          trigger: ".case-learnings",
+          start: "top 85%",
+          toggleActions: "play none none none",
+          once: true,
+        },
       });
 
       gsap.from(".more-project-card", {
@@ -115,7 +155,25 @@ function ProjectDetail() {
         y: 30,
         stagger: 0.1,
         duration: 0.7,
-        scrollTrigger: { trigger: ".case-more", start: "top 82%" },
+        scrollTrigger: {
+          trigger: ".case-more",
+          start: "top 85%",
+          toggleActions: "play none none none",
+          once: true,
+        },
+      });
+
+      gsap.from(".case-cta-content", {
+        autoAlpha: 0,
+        y: 28,
+        duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".case-cta-strip",
+          start: "top 85%",
+          toggleActions: "play none none none",
+          once: true,
+        },
       });
     }, rootRef);
 
@@ -201,22 +259,22 @@ function ProjectDetail() {
 
       <div className="case-overview-strip section-divider">
         <div className="site-container case-overview-grid">
-          <div className="overview-stat">
+          <div className="overview-stat animate-on-scroll">
             <span className="stat-dot" />
             <p className="stat-label">Timeline</p>
             <p className="stat-value timeline-counter">0 Months</p>
           </div>
-          <div className="overview-stat">
+          <div className="overview-stat animate-on-scroll">
             <span className="stat-dot" />
             <p className="stat-label">Role</p>
             <p className="stat-value">Solo Dev</p>
           </div>
-          <div className="overview-stat">
+          <div className="overview-stat animate-on-scroll">
             <span className="stat-dot" />
             <p className="stat-label">Stack</p>
             <p className="stat-value">MERN</p>
           </div>
-          <div className="overview-stat">
+          <div className="overview-stat animate-on-scroll">
             <span className="stat-dot" />
             <p className="stat-label">Status</p>
             <p className="stat-value">Live ✓</p>
@@ -235,7 +293,7 @@ function ProjectDetail() {
           <div className="features-list">
             <p className="font-mono-label mb-6">KEY FEATURES</p>
             {project.features.map((item) => (
-              <div className="feature-item" key={item}>
+              <div className="feature-item animate-on-scroll" key={item}>
                 <span className="feature-check">✓</span>
                 <span>{item}</span>
               </div>
@@ -250,7 +308,7 @@ function ProjectDetail() {
           <h2 className="case-h2 case-h2-center">The Stack</h2>
           <div className="tech-chip-wrap">
             {project.techStack.map((tech) => (
-              <span className="tech-chip" key={tech}>
+              <span className="tech-chip animate-on-scroll" key={tech}>
                 {tech}
               </span>
             ))}
@@ -260,13 +318,13 @@ function ProjectDetail() {
 
       <div className="case-learnings section-pad section-divider">
         <div className="site-container case-card-grid">
-          <article className="case-info-card challenge-card-left">
+          <article className="case-info-card challenge-card-left animate-on-scroll">
             <span className="case-card-corner" aria-hidden="true" />
             <span className="case-diamond" aria-hidden="true" />
             <h3>The Hard Part</h3>
             <p>{project.challenges}</p>
           </article>
-          <article className="case-info-card challenge-card-right">
+          <article className="case-info-card challenge-card-right animate-on-scroll">
             <span className="case-card-corner" aria-hidden="true" />
             <span className="case-diamond" aria-hidden="true" />
             <h3>What I Learned</h3>
@@ -281,7 +339,7 @@ function ProjectDetail() {
           <h2 className="case-h2">Other Projects</h2>
           <div className="more-project-grid">
             {moreProjects.map((item) => (
-              <article key={item.id} className="more-project-card">
+              <article key={item.id} className="more-project-card animate-on-scroll">
                 <div>
                   <h3>{item.title}</h3>
                   <p>{item.tagline}</p>
@@ -309,7 +367,7 @@ function ProjectDetail() {
       </div>
 
       <div className="case-cta-strip">
-        <div className="site-container text-center">
+        <div className="site-container text-center case-cta-content animate-on-scroll">
           <h2>Interested in working together?</h2>
           <p>Let&apos;s build something great.</p>
           <button

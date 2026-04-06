@@ -26,6 +26,19 @@ const Skills = () => {
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
+      gsap.from("#skills .font-mono-label", {
+        autoAlpha: 0,
+        y: 18,
+        duration: 0.5,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: "#skills",
+          start: "top 85%",
+          toggleActions: "play none none none",
+          once: true,
+        },
+      });
+
       gsap.from(".skill-card", {
         opacity: 0,
         y: 50,
@@ -35,9 +48,10 @@ const Skills = () => {
         ease: "back.out(1.4)",
         immediateRender: false,
         scrollTrigger: {
-          trigger: "#skills",
+          trigger: ".skills-grid",
           start: "top 85%",
           toggleActions: "play none none none",
+          once: true,
         },
       });
     }, rootRef);
@@ -52,12 +66,12 @@ const Skills = () => {
       id="skills"
     >
       <div className="site-container relative z-10 w-full">
-        <p className="font-mono-label mb-10 md:mb-12">— 02. MY STACK</p>
+        <p className="font-mono-label mb-10 md:mb-12 animate-on-scroll">— 02. MY STACK</p>
 
         <div className="skills-grid-wrap">
-          <div className="skills-flex">
+          <div className="skills-flex skills-grid">
             {skills.map((skill, index) => (
-              <div key={index} className="skill-card">
+              <div key={index} className="skill-card animate-on-scroll">
                 <div className="skill-card-body">
                   <div className="skill-icon-wrap">
                     {skill.isBadge ? (

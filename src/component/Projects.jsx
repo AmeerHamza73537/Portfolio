@@ -9,6 +9,19 @@ const Projects = () => {
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
+      gsap.from("#projects .font-mono-label", {
+        autoAlpha: 0,
+        y: 18,
+        duration: 0.5,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: "#projects",
+          start: "top 85%",
+          toggleActions: "play none none none",
+          once: true,
+        },
+      });
+
       gsap.from(".project-card", {
         opacity: 0,
         y: 80,
@@ -17,9 +30,10 @@ const Projects = () => {
         ease: "power3.out",
         immediateRender: false,
         scrollTrigger: {
-          trigger: "#projects",
+          trigger: ".projects-grid",
           start: "top 85%",
           toggleActions: "play none none none",
+          once: true,
         },
       });
     }, rootRef);
@@ -34,9 +48,9 @@ const Projects = () => {
       className="relative section-pad section-divider text-[#f5f0e8] overflow-hidden"
     >
       <div className="site-container relative z-10">
-        <p className="font-mono-label mb-10 md:mb-12">— 03. PROJECTS</p>
+        <p className="font-mono-label mb-10 md:mb-12 animate-on-scroll">— 03. PROJECTS</p>
 
-        <div className="projects-flex">
+        <div className="projects-flex projects-grid">
           {projectData.map((project) => (
             <article
               key={project.id}
@@ -49,7 +63,7 @@ const Projects = () => {
                   navigate(project.path);
                 }
               }}
-              className="project-card"
+              className="project-card animate-on-scroll"
             >
               <h3
                 className="mb-3 sm:mb-4 project-card-title-link"

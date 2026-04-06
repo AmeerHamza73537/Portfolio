@@ -1487,6 +1487,12 @@ body:hover {
   box-shadow: 0 14px 38px rgba(232, 197, 71, 0.24);
 }
 
+/* Safety: never globally hide content.
+   Scroll animations should not make unseen sections invisible if triggers fail. */
+.animate-on-scroll {
+  opacity: 1;
+}
+
 @media (max-width: 1024px) {
   .case-hero-grid,
   .case-problem-grid {
