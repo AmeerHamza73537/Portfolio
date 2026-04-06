@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { LenisProvider } from "./context/LenisProvider.jsx";
+import { useLenisContext } from "./context/useLenisContext.js";
 
 import Navbar from "./component/Navbar.jsx";
 import Home from "./component/Home.jsx";
@@ -12,14 +13,21 @@ import Footer from "./component/Footer.jsx";
 import Cursor from "./assets/Cursor.jsx";
 import Projects from "./component/Projects.jsx";
 import SectionMarquee from "./component/SectionMarquee.jsx";
-
-import JobNest from "./project/JobNest.jsx";
-import HomeScape from "./project/HomeScape.jsx";
-import Authify from "./project/Authify.jsx";
-import SwiftManage from "./project/SwiftManage.jsx";
-import CourseHub from "./project/CourseHub.jsx";
+import ProjectDetail from "./project/ProjectDetail.jsx";
 
 function HomePage() {
+  const location = useLocation();
+  const { scrollToId } = useLenisContext();
+
+  useEffect(() => {
+    const targetId = location.state?.scrollTo;
+    if (targetId) {
+      const t = setTimeout(() => scrollToId(targetId), 80);
+      return () => clearTimeout(t);
+    }
+    return undefined;
+  }, [location.state, scrollToId]);
+
   return (
     <>
       <Home />
@@ -45,11 +53,7 @@ function App() {
             <Navbar />
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/projects/job-nest" element={<JobNest />} />
-              <Route path="/projects/home-scape" element={<HomeScape />} />
-              <Route path="/projects/authify" element={<Authify />} />
-              <Route path="/projects/swiftmanage" element={<SwiftManage />} />
-              <Route path="/projects/course-hub" element={<CourseHub />} />
+              <Route path="/projects/:projectId" element={<ProjectDetail />} />
             </Routes>
             <Cursor />
           </div>

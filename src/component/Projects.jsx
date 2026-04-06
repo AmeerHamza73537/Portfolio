@@ -51,7 +51,24 @@ const Projects = () => {
               }}
               className="project-card"
             >
-              <h3 className="mb-3 sm:mb-4">{project.name}</h3>
+              <h3
+                className="mb-3 sm:mb-4 project-card-title-link"
+                role="button"
+                tabIndex={0}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(project.path);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    navigate(project.path);
+                  }
+                }}
+              >
+                {project.name}
+              </h3>
 
               <p className="project-card-desc">{project.description}</p>
 
@@ -67,7 +84,7 @@ const Projects = () => {
                 </a>
 
                 <a
-                  href={project.demo}
+                  href={project.liveDemo || project.demo}
                   target="_blank"
                   rel="noreferrer"
                   className="project-ghost-btn"
@@ -75,6 +92,17 @@ const Projects = () => {
                 >
                   Live Demo
                 </a>
+
+                <button
+                  type="button"
+                  className="project-ghost-btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(project.path);
+                  }}
+                >
+                  Case Study →
+                </button>
               </div>
             </article>
           ))}
