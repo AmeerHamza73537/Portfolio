@@ -67,12 +67,12 @@ const Home = () => {
       </div>
 
       <a
-        href="/resume.pdf"
+        href="/public/resume.pdf"
         download="Ameer-Hamza-Resume.pdf"
         className="hero-resume-btn relative z-[1]"
       >
         <span className="hr-a block">Download Resume</span>
-        <span className="hr-b text-sm">Click to Get My CV 🚀</span>
+        <span className="hr-b text-sm">Click to Get My CV</span>
       </a>
     </section>
   );

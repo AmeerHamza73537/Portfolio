@@ -32,34 +32,34 @@ const Footer = () => {
   return (
     <footer ref={footerRef} className="footer site-footer overflow-x-visible bg-[#0c0c0c] border-t border-[#1e1e1e] text-[#7a7a7a] py-10 section-divider">
       <div className="flex flex-col items-center space-y-6 overflow-visible">
-        <div className="footer-icons-row">
+        <div className="footer-icons-row flex items-center justify-center gap-5">
           <a
             href="https://github.com/AmeerHamza73537"
-            className="footer-icon animate-on-scroll"
+            className="footer-icon animate-on-scroll flex items-center justify-center"
             aria-label="GitHub"
           >
-            <FiGithub className="w-5 h-5" />
+            <FiGithub className="w-6 h-6" />
           </a>
           <a
             href="https://www.linkedin.com/in/ameer-hamza-63a128353/"
-            className="footer-icon animate-on-scroll"
+            className="footer-icon animate-on-scroll flex items-center justify-center"
             aria-label="LinkedIn"
           >
-            <FiLinkedin className="w-5 h-5" />
+            <FiLinkedin className="w-6 h-6" />
           </a>
           <a
             href="mailto:contacthamza456@gmail.com"
-            className="footer-icon animate-on-scroll"
+            className="footer-icon animate-on-scroll flex items-center justify-center"
             aria-label="Email"
           >
-            <IoMailOutline className="w-5 h-5" />
+            <IoMailOutline className="w-6 h-6" />
           </a>
           <a
             href="https://leetcode.com/u/hamza756/"
-            className="footer-icon animate-on-scroll"
+            className="footer-icon animate-on-scroll flex items-center justify-center"
             aria-label="LeetCode"
           >
-            <SiLeetcode className="w-5 h-5" />
+            <SiLeetcode className="w-6 h-6" />
           </a>
         </div>
 
