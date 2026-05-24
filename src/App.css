@@ -371,134 +371,89 @@ body:hover {
   max-height: 520px;
 }
 
-/* Skills — grid for equal cell widths & row heights (no ragged “up/down” rows) */
+/* Skills — categorized, labeled two-column groups */
 .skills-grid-wrap {
   width: 100%;
 }
 
 .skills-flex {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
+  grid-template-columns: 1fr;
+  gap: 1rem;
   width: 100%;
-  align-items: stretch;
-}
-
-@media (min-width: 640px) {
-  .skills-flex {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .skills-flex {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 1rem;
-  }
-}
-
-.skill-card {
-  min-height: 128px;
-  width: 100%;
-  max-width: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0.85rem 0.5rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 0.75rem;
-  transition: transform 0.25s cubic-bezier(0.23, 1, 0.32, 1),
-    border-color 0.25s cubic-bezier(0.23, 1, 0.32, 1),
-    box-shadow 0.25s cubic-bezier(0.23, 1, 0.32, 1);
-  transform-style: preserve-3d;
-  cursor: default;
-}
-
-/* Icon + label as one centered group (not stretched apart) */
-.skill-card-body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.45rem;
-  text-align: center;
-}
-
-@media (min-width: 640px) {
-  .skill-card {
-    min-height: 136px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .skill-card {
-    min-height: 142px;
-  }
-}
-
-.skill-card:hover {
-  transform: perspective(800px) rotateX(10deg) rotateY(10deg) scale(1.06) translateZ(12px);
-  border-color: rgba(232, 197, 71, 0.45);
-  box-shadow: 0 16px 48px rgba(232, 197, 71, 0.12);
-}
-
-.skill-card .skill-icon-wrap {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 2.25rem;
-  transition: transform 0.25s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.skill-card:hover .skill-icon-wrap {
-  transform: translateY(-4px);
-}
-
-.skill-card img {
-  width: 2rem;
-  height: 2rem;
-  object-fit: contain;
 }
 
 @media (min-width: 768px) {
-  .skill-card img {
-    width: 2.5rem;
-    height: 2.5rem;
+  .skills-flex {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-.skill-name {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  color: var(--muted);
-  letter-spacing: 0.04em;
-  line-height: 1.25;
-  max-width: 100%;
+.skill-group-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+}
+
+.skill-group-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 @media (min-width: 640px) {
-  .skill-name {
-    font-size: 11px;
+  .skill-group-inner {
+    flex-direction: row;
+    align-items: center;
   }
 }
 
-.skill-express-badge {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  color: var(--gold);
-  padding: 0.35rem 0.5rem;
-  border: 1px solid rgba(232, 197, 71, 0.35);
-  border-radius: 0.25rem;
+.skill-group-left {
+  flex: 0 0 180px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
+
+.skill-label {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1rem, 3.5vw, 2.25rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cream);
+  margin: 0;
+}
+
+.skill-group-right {
+  flex: 1 1 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.skill-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(232, 197, 71, 0.05);
+  border: 1px solid rgba(232, 197, 71, 0.14);
+  border-radius: 999px;
+  color: var(--cream);
+  font-family: var(--font-mono);
+  font-size: 0.94rem;
+}
+
+.skill-chip img {
+  width: 1.4rem;
+  height: 1.4rem;
+  object-fit: contain;
+}
+
+.skill-chip span { color: var(--cream); }
 
 /* Projects — equal-height cards per row */
 .projects-flex {

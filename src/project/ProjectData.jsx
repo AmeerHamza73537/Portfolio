@@ -1,6 +1,59 @@
 // src/data/projects.js
 export const projectData = [
   {
+    id: "kindred",
+    projectId: "kindred",
+    name: "Kindred",
+    title: "Kindred",
+    tagline: "Neighbors sharing kind nearby.",
+    github: "https://github.com/AmeerHamza73537/Kindred",
+    demo: "",
+    liveDemo: "",
+    path: "/projects/kindred",
+    description:
+      "Kindred is a full-stack community platform for lending, gifting, and sharing skills locally. It combines map-based listings, request workflows, secure handoff verification, reviews, and gratitude to help neighbors build trust and connect.",
+    technologies: [
+      "React",
+      "Vite",
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "Tailwind CSS",
+      "JWT",
+      "Socket.IO",
+      "Cloudinary",
+      "Leaflet",
+      "Axios",
+      "React Hook Form",
+    ],
+    techStack: ["React", "Node.js", "Express", "MongoDB", "Tailwind CSS", "JWT"],
+    features: [
+      "JWT auth with access and refresh tokens stored in httpOnly cookies",
+      "Create lend, gift, or skill listings with images and location data",
+      "Browse nearby items on an interactive map with filters",
+      "Request borrowing dates and manage approvals or cancellations",
+      "Secure pickup handoff with a 4-digit verification code",
+      "Post reviews and gratitude notes after completed exchanges",
+      "Profile trust rings, badges, and community reputation metrics",
+    ],
+    longDescription:
+      "Kindred is built to help neighbors share items and skills safely and transparently. The platform makes it easy to list items for lending, gifting, or skill exchange, then coordinate nearby pick-up through a guided request flow. Handoffs are verified with a short code, and completed transactions prompt reviews and thank-you notes to strengthen community trust.",
+    challenges:
+      "The most challenging part was designing a seamless handoff flow that supports both gift and lend scenarios while keeping verification and review processes simple for users.",
+    outcome:
+      "This project strengthened my full-stack product design skills by blending location-based listing workflows with secure auth, real-time events, and community-focused trust mechanics.",
+    year: "2024",
+    type: "Full Stack Web App",
+    role: "Solo Developer — Design & Engineering",
+    timelineMonths: 4,
+    detailDescription:
+      'Kindred is a full-stack web application for nearby skill and item sharing. It uses React and Vite on the frontend with Node.js, Express, and MongoDB on the backend. Users authenticate securely with JWT stored in httpOnly cookies, create listings for lending, gifting, or skills, and explore nearby offers on a map. Requests are managed through a calendar-driven workflow, and successful handoffs use a 4-digit verification code. Completed transactions encourage reviews and gratitude messages, reinforcing trust through user profiles, badges, and ratings. The app was designed to support real neighborhood exchanges while maintaining clear, reliable flows across authentication, listings, requests, and confirmations.',
+    screenshots: [
+      "https://via.placeholder.com/400x300?text=Kindred+1",
+      "https://via.placeholder.com/400x300?text=Kindred+2"
+    ]
+  },
+  {
     id: "job-nest",
     projectId: "jobnest",
     name: "JobNest",

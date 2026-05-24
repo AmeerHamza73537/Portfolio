@@ -1,9 +1,11 @@
-import React, { useLayoutEffect, useRef } from "react";
+import React, { useCallback, useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
+import { useLenisContext } from "../context/useLenisContext";
 
 const Home = () => {
   const rootRef = useRef(null);
   const glowRef = useRef(null);
+  const { lenis, scrollToId } = useLenisContext();
 
   useLayoutEffect(() => {
     const glow = glowRef.current;
@@ -20,6 +22,14 @@ const Home = () => {
     }
     return undefined;
   }, []);
+
+  const navigate = useCallback(
+    (id) => {
+      scrollToId(id)
+      setMenuOpen(false)
+    },
+    [scrollToId]
+  );
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -61,11 +71,17 @@ const Home = () => {
         <h2 className="hero-subtitle m-0">A Software Engineer</h2>
 
         <p className="hero-tagline">
-          Turning ideas into products through creative engineering — focused on solving real
-          problems with clean, efficient execution.
+          I build full-stack web apps with the MERN stack — focused on clean architecture and shipping things that actually work.
         </p>
       </div>
 
+      <div className="flex items-center gap-4 justify-around ">
+        <button
+        onClick={() => navigate('projects')}
+        className="hero-resume-btn relative z-[1] hover:cursor-pointer"
+      >
+        <span className="block">See My Work</span>
+      </button>
       <a
         href="/public/resume.pdf"
         download="Ameer-Hamza-Resume.pdf"
@@ -74,6 +90,8 @@ const Home = () => {
         <span className="hr-a block">Download Resume</span>
         <span className="hr-b text-sm">Click to Get My CV</span>
       </a>
+      </div>
+      
     </section>
   );
 };
