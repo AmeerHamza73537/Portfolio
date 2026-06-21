@@ -83,7 +83,7 @@ const Home = () => {
         <span className="block">See My Work</span>
       </button>
       <a
-        href="/public/resume.pdf"
+        href="/resume.pdf"
         download="Ameer-Hamza-Resume.pdf"
         className="hero-resume-btn relative z-[1]"
       >
