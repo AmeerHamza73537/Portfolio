@@ -5,14 +5,14 @@ function TimelineEntry({ experience, index, itemCount, progress }) {
   const threshold = itemCount > 1 ? index / (itemCount - 1) : 0;
   const isReached = useTransform(progress, (value) => value >= threshold);
   const dotColor = useTransform(isReached, (reached) =>
-    reached ? "#3b82f6" : "#3f3f46",
+    reached ? "#e8c547" : "#3f3f46",
   );
   const dotBorderColor = useTransform(isReached, (reached) =>
-    reached ? "#93c5fd" : "#52525b",
+    reached ? "#e8c547" : "#52525b",
   );
   const dotShadow = useTransform(isReached, (reached) =>
     reached
-      ? "0 0 0 5px rgba(59, 130, 246, 0.12), 0 0 24px rgba(59, 130, 246, 0.55)"
+      ? "0 0 0 5px rgba(232, 197, 71, 0.12), 0 0 24px rgba(232, 197, 71, 0.55)"
       : "0 0 0 5px rgba(63, 63, 70, 0.12)",
   );
 
@@ -33,7 +33,7 @@ function TimelineEntry({ experience, index, itemCount, progress }) {
           aria-hidden="true"
         >
           <Motion.span
-            className="absolute inset-0 origin-top bg-gradient-to-b from-blue-400 via-blue-500 to-cyan-400"
+            className="absolute inset-0 origin-top bg-[#e8c547]"
             style={{ scaleY: segmentProgress }}
           />
         </div>
@@ -50,14 +50,14 @@ function TimelineEntry({ experience, index, itemCount, progress }) {
       />
 
       <Motion.article
-        className="relative overflow-hidden rounded-xl border border-[#292929] bg-[#141414] p-5 shadow-[0_18px_55px_rgba(0,0,0,0.24)] transition-colors duration-300 hover:border-blue-500/30 sm:p-7"
+        className="relative overflow-hidden rounded-xl border border-[#292929] bg-[#141414] p-5 shadow-[0_18px_55px_rgba(0,0,0,0.24)] transition-colors duration-300 hover:border-[#e8c547]/30 sm:p-7"
         initial={{ opacity: 0, y: 28 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.18 }}
         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
       >
         <div
-          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-400/55 to-transparent"
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#e8c547]/55 to-transparent"
           aria-hidden="true"
         />
 
@@ -70,7 +70,7 @@ function TimelineEntry({ experience, index, itemCount, progress }) {
           </p>
         </header>
 
-        <span className="mt-4 inline-flex rounded-full border border-blue-400/20 bg-blue-500/10 px-3 py-1 font-mono text-[11px] font-medium tracking-wide text-blue-300 sm:absolute sm:right-6 sm:top-6 sm:mt-0">
+        <span className="mt-4 inline-flex rounded-full border border-[#e8c547]/20 bg-[#e8c547]/10 px-3 py-1 font-mono text-[11px] font-medium tracking-wide text-[#e8c547] sm:absolute sm:right-6 sm:top-6 sm:mt-0">
           {experience.duration}
         </span>
 
@@ -80,7 +80,7 @@ function TimelineEntry({ experience, index, itemCount, progress }) {
               key={`${experience.id ?? index}-bullet-${bulletIndex}`}
               className="flex gap-3 text-sm leading-7 text-[#b7b7b7] sm:text-[15px]"
             >
-              <span className="mt-[0.72rem] size-1.5 shrink-0 rounded-full bg-blue-400" aria-hidden="true" />
+              <span className="mt-[0.72rem] size-1.5 shrink-0 rounded-full bg-[#e8c547]" aria-hidden="true" />
               <span>{bullet}</span>
             </li>
           ))}
@@ -119,7 +119,7 @@ export default function Experience({ experiences = [] }) {
       aria-labelledby="experience-heading"
     >
       <div
-        className="pointer-events-none absolute left-1/2 top-1/3 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-blue-500/[0.035] blur-[120px]"
+        className="pointer-events-none absolute left-1/2 top-1/3 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-[rgba(232,197,71,0.035)] blur-[120px]"
         aria-hidden="true"
       />
 

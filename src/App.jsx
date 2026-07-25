@@ -36,24 +36,6 @@ const experiences = [
       "JWT",
     ],
   },
-  {
-    id: "developers-hub-2025",
-    role: "Full Stack Developer",
-    company: "Developer's Hub Corporation",
-    duration: "2 months",
-    bullets: [
-      "Shipped reusable dashboard modules with React and Tailwind CSS, reducing duplicate interface code by 30%.",
-      "Refactored Express.js services and MongoDB queries, improving median API response time by 22%.",
-      "Maintained collaborative Git workflows and debugged release issues, sustaining reliable weekly deployments.",
-    ],
-    technologies: [
-      "React",
-      "Tailwind CSS",
-      "Express.js",
-      "MongoDB",
-      "Git",
-    ],
-  },
 ];
 
 function HomePage() {
