@@ -6,7 +6,7 @@ import { useLenisContext } from "../context/useLenisContext";
 const Home = () => {
   const rootRef = useRef(null);
   const canvasRef = useRef(null);
-  const { lenis, scrollToId } = useLenisContext();
+  const { scrollToId } = useLenisContext();
 
   // 3D signature piece — replaces the old static glow blob
   useEffect(() => {
