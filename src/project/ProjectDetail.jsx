@@ -227,9 +227,11 @@ function ProjectDetail() {
             </div>
 
             <div className="case-hero-ctas">
-              <a className="case-cta case-cta-primary" href={project.liveDemo || project.demo} target="_blank" rel="noreferrer">
-                Live Demo →
-              </a>
+              {project.liveDemo || project.demo ? (
+                <a className="case-cta case-cta-primary" href={project.liveDemo || project.demo} target="_blank" rel="noreferrer">
+                  Live Demo →
+                </a>
+              ) : null}
               <a className="case-cta case-cta-ghost" href={project.github} target="_blank" rel="noreferrer">
                 View Code
               </a>
@@ -267,17 +269,17 @@ function ProjectDetail() {
           <div className="overview-stat animate-on-scroll">
             <span className="stat-dot" />
             <p className="stat-label">Role</p>
-            <p className="stat-value">Solo Dev</p>
+            <p className="stat-value">{project.roleShort || "Solo Dev"}</p>
           </div>
           <div className="overview-stat animate-on-scroll">
             <span className="stat-dot" />
             <p className="stat-label">Stack</p>
-            <p className="stat-value">MERN</p>
+            <p className="stat-value">{project.stackLabel || "MERN"}</p>
           </div>
           <div className="overview-stat animate-on-scroll">
             <span className="stat-dot" />
             <p className="stat-label">Status</p>
-            <p className="stat-value">Live ✓</p>
+            <p className="stat-value">{project.status || "Live"}</p>
           </div>
         </div>
       </div>
@@ -353,9 +355,11 @@ function ProjectDetail() {
                   <a href={item.github} target="_blank" rel="noreferrer" className="project-ghost-btn">
                     GitHub
                   </a>
-                  <a href={item.liveDemo || item.demo} target="_blank" rel="noreferrer" className="project-ghost-btn">
-                    Live Demo
-                  </a>
+                  {item.liveDemo || item.demo ? (
+                    <a href={item.liveDemo || item.demo} target="_blank" rel="noreferrer" className="project-ghost-btn">
+                      Live Demo
+                    </a>
+                  ) : null}
                   <button type="button" className="project-ghost-btn" onClick={() => navigate(item.path)}>
                     Case Study →
                   </button>

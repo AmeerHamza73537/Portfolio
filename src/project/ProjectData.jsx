@@ -2,6 +2,7 @@
 export const projectData = [
   {
     id: "kindred",
+    category: "full-stack",
     projectId: "kindred",
     name: "Kindred",
     title: "Kindred",
@@ -55,6 +56,7 @@ export const projectData = [
   },
   {
     id: "job-nest",
+    category: "full-stack",
     projectId: "jobnest",
     name: "JobNest",
     title: "JobNest",
@@ -93,6 +95,7 @@ export const projectData = [
   }, 
   {
     id: "home-scape",
+    category: "full-stack",
     projectId: "homescape",
     name: "HomeScape",
     title: "Royal Estate",
@@ -131,6 +134,7 @@ export const projectData = [
   },
    {
     id: "authify",
+    category: "full-stack",
     projectId: "authify",
     name: "Authify",
     title: "Authify",
@@ -169,6 +173,7 @@ export const projectData = [
   },
   {
     id: "swiftmanage",
+    category: "full-stack",
     projectId: "swiftmanage",
     name: "SwiftManage",
     title: "SwiftManage",
@@ -207,6 +212,7 @@ export const projectData = [
   },
   {
     id: "course-hub",
+    category: "full-stack",
     projectId: "coursehub",
     name: "CourseHub",
     title: "CourseHub",
@@ -243,7 +249,151 @@ export const projectData = [
       "https://via.placeholder.com/400x300?text=CourseHub+2"
     ]
   },
-  
+  {
+    id: "drive-price",
+    category: "ai",
+    projectId: "driveprice",
+    name: "DrivePrice",
+    title: "DrivePrice",
+    tagline: "Used-car valuation, learned from real listing data.",
+    github: "https://github.com/AmeerHamza73537/Drive-Price",
+    demo: "",
+    liveDemo: "",
+    path: "/projects/drive-price",
+    description:
+      "An end-to-end machine-learning app that cleans vehicle listing data, compares multiple regression models, and serves instant used-car price estimates through a lightweight Flask interface.",
+    technologies: [
+      "Python",
+      "Flask",
+      "scikit-learn",
+      "Pandas",
+      "NumPy",
+      "Matplotlib",
+      "Seaborn",
+      "Joblib",
+    ],
+    techStack: ["Python", "scikit-learn", "Flask", "Pandas", "Joblib"],
+    features: [
+      "Reusable preprocessing pipeline with numeric imputation and scaling",
+      "High-cardinality category reduction and one-hot encoding",
+      "Side-by-side training of four regression model families",
+      "Log-target transformation for stable price predictions",
+      "Persisted model artifacts for fast local inference",
+      "Flask form for single-vehicle price estimates",
+    ],
+    longDescription:
+      "DrivePrice turns raw used-vehicle listings into a practical prediction experience. The project covers the complete machine-learning lifecycle: cleaning mixed numeric and categorical data, building a reusable preprocessing pipeline, training and comparing several regression approaches, persisting the strongest artifacts, and exposing predictions through a small Flask web application.\n\nThe modeling workflow uses median imputation and scaling for numeric features, while categorical data is reduced and one-hot encoded to keep the feature matrix stable. Linear Regression, Random Forest, Gradient Boosting, and AdaBoost models are trained with a transformed target to reduce the effect of price skew.\n\nThe result is more than a notebook experiment—it is a reproducible ML product with a clear path from dataset to user-facing inference.",
+    challenges:
+      "The hardest part was keeping preprocessing identical between training and inference while handling sparse, high-cardinality vehicle attributes without an unstable feature matrix.",
+    outcome:
+      "This project strengthened my understanding of production-minded ML pipelines, regression evaluation, artifact persistence, and serving trained models through a web interface.",
+    year: "2026",
+    type: "AI / Machine Learning App",
+    role: "Solo Developer — ML & Engineering",
+    roleShort: "Solo Dev",
+    timelineMonths: 2,
+    stackLabel: "Python + ML",
+    status: "Repository",
+    detailDescription:
+      "DrivePrice is an end-to-end car price prediction system built with Python, scikit-learn, Pandas, and Flask. It turns raw listing data into repeatable model training and fast single-row predictions through persisted preprocessing and regression artifacts.",
+    screenshots: [],
+  },
+  {
+    id: "meridian",
+    category: "ai",
+    projectId: "meridian",
+    name: "Meridian",
+    title: "Meridian",
+    tagline: "A multi-agent research team inside one intelligent system.",
+    github: "https://github.com/AmeerHamza73537/Meridian",
+    demo: "",
+    liveDemo: "",
+    path: "/projects/meridian",
+    description:
+      "An autonomous LangChain research system where specialized search, reader, writer, and critic agents collaborate to produce current, structured, quality-reviewed reports.",
+    technologies: [
+      "Python",
+      "LangChain",
+      "Google Gemini",
+      "Tavily API",
+      "BeautifulSoup",
+      "Streamlit",
+      "LCEL",
+    ],
+    techStack: ["LangChain", "Gemini", "Tavily", "Streamlit", "Python"],
+    features: [
+      "Four-agent search, reading, writing, and critique pipeline",
+      "Live web research through Tavily search",
+      "Deep page extraction with BeautifulSoup and Requests",
+      "Structured reports with findings, conclusions, and sources",
+      "Independent quality scoring and improvement feedback",
+      "Streamlit pipeline tracker and Markdown report downloads",
+    ],
+    longDescription:
+      "Meridian is an autonomous multi-agent research assistant designed to move beyond a single model response. A Search Agent discovers current sources, a Reader Agent extracts the most useful material, a Writer Agent turns that evidence into a structured report, and a Critic Agent reviews the result for quality and completeness.\n\nThe system is orchestrated with LangChain and LCEL, powered by Google Gemini, and connected to live search through Tavily. Shared pipeline state allows each specialist to build on the previous agent's work while the Streamlit interface shows progress and makes the final Markdown report downloadable.\n\nMeridian demonstrates agentic architecture as a practical product: tool use, staged reasoning, shared context, structured output, and a built-in quality loop working together in one research workflow.",
+    challenges:
+      "The central challenge was coordinating several independent LLM stages so context remained useful, outputs stayed structured, and failures in search or extraction did not derail the complete research flow.",
+    outcome:
+      "Building Meridian deepened my experience with agent orchestration, tool-connected LLMs, structured prompting, shared pipeline state, and quality-control patterns for AI products.",
+    year: "2026",
+    type: "Agentic AI System",
+    role: "Solo Developer — AI Architecture & Engineering",
+    roleShort: "Solo Dev",
+    timelineMonths: 2,
+    stackLabel: "Agents + LLM",
+    status: "Repository",
+    detailDescription:
+      "Meridian is a LangChain-powered multi-agent research system that coordinates search, reading, writing, and critique agents to create current, source-backed reports through a Streamlit interface.",
+    screenshots: [],
+  },
+  {
+    id: "campus-ai",
+    category: "ai",
+    projectId: "campusai",
+    name: "CampusAI",
+    title: "CampusAI",
+    tagline: "University answers, available the moment students need them.",
+    github: "https://github.com/AmeerHamza73537/CampusAI",
+    demo: "https://campus-ai-green.vercel.app",
+    liveDemo: "https://campus-ai-green.vercel.app",
+    path: "/projects/campus-ai",
+    description:
+      "A trained university assistant that classifies student questions and returns useful answers about admissions, programs, fees, exams, facilities, and campus services.",
+    technologies: [
+      "Python",
+      "Flask",
+      "scikit-learn",
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "NLP",
+    ],
+    techStack: ["Python", "Flask", "scikit-learn", "NLP", "JavaScript"],
+    features: [
+      "Intent-based answers for common university questions",
+      "Included trained model for immediate local use",
+      "Responsive conversational web interface",
+      "Prediction endpoint with empty-input validation",
+      "Health endpoint and automated API checks",
+      "Optional preprocessing, retraining, and evaluation workflow",
+    ],
+    longDescription:
+      "CampusAI is a Flask-based university assistant built to make routine campus information easier to access. Students can ask about admissions, academic programs, fees, examinations, facilities, and student services in a conversational interface instead of searching through scattered pages.\n\nThe application ships with a trained scikit-learn model, vectorizer, and label encoder, so it can run immediately without repeating the training workflow. A separate development path supports preprocessing, model retraining, result plotting, and an optional neural-network experiment. The API includes input validation and health checks, with an automated verification script covering the main prediction flow.\n\nCampusAI combines a focused NLP use case with the practical engineering needed to make the model approachable through a responsive web product.",
+    challenges:
+      "The most demanding part was designing intent data that separated similar university questions reliably while still returning concise, useful answers for varied student phrasing.",
+    outcome:
+      "This project improved my understanding of text classification, model packaging, API validation, and translating an NLP model into a clear user-facing assistant.",
+    year: "2026",
+    type: "AI / NLP Web App",
+    role: "Solo Developer — ML & Full-Stack Engineering",
+    roleShort: "Solo Dev",
+    timelineMonths: 2,
+    stackLabel: "NLP + Flask",
+    status: "Live",
+    detailDescription:
+      "CampusAI is a trained NLP-powered university assistant built with Python, scikit-learn, and Flask. It classifies student questions and responds through a responsive chat experience, with validation and API health checks included.",
+    screenshots: [],
+  },
 ];
 
 export function getProjectByRouteId(projectId) {

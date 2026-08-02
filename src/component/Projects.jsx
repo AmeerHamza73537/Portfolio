@@ -1,464 +1,486 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { FiArrowUpRight, FiCpu, FiGithub, FiLayers } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import * as THREE from "three";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { projectData } from "../project/ProjectData.jsx";
-import { useLenisContext } from "../context/useLenisContext.js";
-import React from "react";
 
-gsap.registerPlugin(ScrollTrigger);
-
-const TAU = Math.PI * 2;
-const CARD_ACCENTS = ["#e8c547", "#e07b39", "#d8b84a", "#f0a060"];
-
-const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+const FILTERS = [
+  { id: "all", label: "All" },
+  { id: "full-stack", label: "Full Stack" },
+  { id: "ai", label: "AI" },
+];
 
 const PROJECTS_STYLES = `
-  .p3d-section {
+  .work-section {
     position: relative;
-    width: 100%;
-    height: 100svh;
-    min-height: 660px;
     overflow: hidden;
+    padding: clamp(7rem, 11vw, 10rem) 0;
     border-bottom: 1px solid var(--divider);
     background:
-      radial-gradient(circle at 50% 50%, rgba(232, 197, 71, 0.055), transparent 34%),
-      linear-gradient(180deg, #0c0c0c 0%, #10100f 48%, #0c0c0c 100%);
+      radial-gradient(circle at 12% 16%, rgba(232, 197, 71, 0.07), transparent 25rem),
+      radial-gradient(circle at 88% 78%, rgba(224, 123, 57, 0.045), transparent 28rem),
+      #0c0c0c;
     isolation: isolate;
   }
 
-  .p3d-section::before,
-  .p3d-section::after {
+  .work-section::before {
     content: "";
     position: absolute;
-    z-index: 0;
-    pointer-events: none;
-    border-radius: 50%;
-  }
-
-  .p3d-section::before {
-    width: min(74vw, 960px);
-    aspect-ratio: 1;
-    left: 50%;
-    top: 52%;
-    transform: translate(-50%, -50%);
-    border: 1px solid rgba(232, 197, 71, 0.06);
-    box-shadow:
-      0 0 100px rgba(232, 197, 71, 0.025),
-      inset 0 0 100px rgba(232, 197, 71, 0.02);
-  }
-
-  .p3d-section::after {
-    width: 38vw;
-    height: 38vw;
-    max-width: 520px;
-    max-height: 520px;
-    right: -18vw;
-    bottom: -25vw;
-    background: rgba(224, 123, 57, 0.04);
-    filter: blur(80px);
-  }
-
-  .p3d-webgl {
-    position: absolute;
+    z-index: -1;
     inset: 0;
-    z-index: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.7;
-    pointer-events: none;
+    opacity: 0.16;
+    background-image:
+      linear-gradient(rgba(245, 240, 232, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245, 240, 232, 0.035) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: linear-gradient(to bottom, transparent, black 15%, black 80%, transparent);
   }
 
-  .p3d-head {
-    position: absolute;
-    z-index: 20;
-    top: clamp(5.5rem, 11vh, 7.75rem);
-    left: max(1rem, calc((100vw - 1200px) / 2 + 1.5rem));
-    right: max(1rem, calc((100vw - 1200px) / 2 + 1.5rem));
+  .work-shell {
+    width: min(1240px, calc(100% - 2rem));
+    margin: 0 auto;
+  }
+
+  .work-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(250px, 0.7fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: end;
+  }
+
+  .work-kicker {
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 2rem;
-    pointer-events: none;
+    align-items: center;
+    gap: 0.7rem;
+    margin: 0 0 1.1rem;
+    color: var(--gold);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
   }
 
-  .p3d-heading {
-    margin: 0.65rem 0 0;
-    max-width: 670px;
+  .work-kicker::before {
+    content: "";
+    width: 32px;
+    height: 1px;
+    background: var(--gradient);
+  }
+
+  .work-heading {
+    max-width: 760px;
+    margin: 0;
     color: var(--cream);
     font-family: var(--font-display);
-    font-size: clamp(2rem, 4vw, 4rem);
+    font-size: clamp(3rem, 7vw, 6.5rem);
     font-style: italic;
     font-weight: 700;
-    line-height: 0.98;
-    letter-spacing: -0.035em;
+    line-height: 0.88;
+    letter-spacing: -0.055em;
   }
 
-  .p3d-heading span {
+  .work-heading span {
     background: var(--gradient);
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
   }
 
-  .p3d-head-note {
-    max-width: 210px;
-    margin: 0.25rem 0 0;
-    color: var(--muted);
+  .work-intro {
+    max-width: 390px;
+    margin: 0;
+    color: #8b8b8b;
+    font-size: clamp(0.9rem, 1.4vw, 1.05rem);
+    line-height: 1.75;
+  }
+
+  .work-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: clamp(2.75rem, 6vw, 5rem) 0 1.25rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid #242424;
+  }
+
+  .work-filters {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+
+  .work-filter {
+    position: relative;
+    min-height: 42px;
+    padding: 0.75rem 1.15rem;
+    overflow: hidden;
+    border: 1px solid #2c2c2c;
+    border-radius: 999px;
+    background: rgba(20, 20, 20, 0.76);
+    color: #8d8d8d;
     font-family: var(--font-mono);
     font-size: 10px;
-    line-height: 1.65;
+    font-weight: 500;
+    line-height: 1;
     letter-spacing: 0.12em;
-    text-align: right;
     text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
   }
 
-  .p3d-viewport {
-    position: absolute;
-    z-index: 5;
-    inset: clamp(8.5rem, 17vh, 11rem) 0 clamp(4.5rem, 8vh, 6rem);
-    perspective: 1300px;
-    perspective-origin: 50% 48%;
-  }
-
-  .p3d-stage {
-    position: absolute;
-    inset: 0;
-    transform-style: preserve-3d;
-    will-change: transform;
-    pointer-events: none;
-  }
-
-  .p3d-card {
-    --card-accent: var(--gold);
-    position: absolute;
-    top: 54%;
-    left: 50%;
-    width: clamp(330px, 31vw, 450px);
-    height: clamp(440px, 61vh, 610px);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    border: 1px solid rgba(245, 240, 232, 0.09);
-    border-radius: 1rem;
-    background: #141414;
-    color: var(--cream);
-    opacity: 0;
-    transform-style: preserve-3d;
-    transform-origin: 50% 50%;
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.38);
-    will-change: transform, opacity;
-    pointer-events: none;
-    transition:
-      border-color 0.45s ease,
-      box-shadow 0.45s ease;
-  }
-
-  .p3d-card::before {
-    content: "";
-    position: absolute;
-    z-index: 4;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--card-accent), transparent);
-    opacity: 0.2;
-    transform: scaleX(0.45);
-    transition: opacity 0.45s ease, transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .p3d-card.is-active {
-    pointer-events: auto;
-    border-color: color-mix(in srgb, var(--card-accent) 28%, transparent);
-    box-shadow:
-      0 38px 90px rgba(0, 0, 0, 0.62),
-      0 16px 54px rgba(232, 197, 71, 0.09);
-  }
-
-  .p3d-card.is-active::before {
-    opacity: 0.95;
-    transform: scaleX(1);
-  }
-
-  .p3d-media {
-    position: relative;
-    height: 38%;
-    min-height: 150px;
-    overflow: hidden;
-    flex: 0 0 auto;
-    background:
-      linear-gradient(135deg, rgba(232, 197, 71, 0.16), rgba(224, 123, 57, 0.035) 58%),
-      #181817;
-  }
-
-  .p3d-media::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    background:
-      linear-gradient(180deg, transparent 48%, rgba(20, 20, 20, 0.78) 100%),
-      linear-gradient(90deg, rgba(12, 12, 12, 0.16), transparent 40%);
-    pointer-events: none;
-  }
-
-  .p3d-media img {
+  .work-filter span {
     position: relative;
     z-index: 1;
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: saturate(0.72) contrast(1.04) brightness(0.74);
-    transform: scale(1.04);
-    transition:
-      filter 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .p3d-card.is-active .p3d-media img {
-    filter: saturate(0.92) contrast(1.02) brightness(0.88);
-    transform: scale(1);
-  }
-
-  .p3d-image-fallback {
+  .work-filter::before {
+    content: "";
     position: absolute;
     inset: 0;
-    display: grid;
-    place-items: center;
-    color: rgba(245, 240, 232, 0.06);
-    font-family: var(--font-display);
-    font-size: clamp(5rem, 10vw, 9rem);
-    font-style: italic;
-    font-weight: 700;
-    line-height: 1;
-    user-select: none;
+    background: var(--gradient);
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.25s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .p3d-index {
-    position: absolute;
-    z-index: 3;
-    top: 1rem;
-    left: 1rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--cream);
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.16em;
-  }
-
-  .p3d-index::before {
-    content: "";
-    width: 18px;
-    height: 1px;
-    background: var(--card-accent);
-  }
-
-  .p3d-card-body {
-    display: flex;
-    min-height: 0;
-    flex: 1 1 auto;
-    flex-direction: column;
-    padding: clamp(1.15rem, 2vw, 1.6rem);
-  }
-
-  .p3d-card-kicker {
-    margin: 0 0 0.45rem;
-    color: var(--card-accent);
-    font-family: var(--font-mono);
-    font-size: 9px;
-    line-height: 1.4;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-  }
-
-  .p3d-card-body h3 {
-    margin: 0;
-  }
-
-  .p3d-title-button {
-    width: fit-content;
-    max-width: 100%;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    background: none;
-    color: var(--cream);
-    font-family: var(--font-display);
-    font-size: clamp(1.65rem, 3vw, 2.4rem);
-    font-style: italic;
-    font-weight: 700;
-    line-height: 1.05;
-    text-align: left;
-    cursor: pointer;
-    transition: color 0.25s ease;
-  }
-
-  .p3d-title-button:hover,
-  .p3d-title-button:focus-visible {
-    color: var(--card-accent);
-    outline: none;
-  }
-
-  .p3d-description {
-    display: -webkit-box;
-    margin: 0.75rem 0 0;
-    overflow: hidden;
-    color: #858585;
-    font-size: clamp(0.72rem, 1.1vw, 0.84rem);
-    line-height: 1.55;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-  }
-
-  .p3d-tech {
-    display: flex;
-    margin: auto 0 0;
-    padding: 0.9rem 0 0;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    list-style: none;
-  }
-
-  .p3d-tech li {
-    padding: 0.32rem 0.55rem;
-    border: 1px solid #292929;
-    border-radius: 999px;
-    color: #989898;
-    font-family: var(--font-mono);
-    font-size: 8px;
-    line-height: 1;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-  }
-
-  .p3d-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.55rem;
-    margin-top: 1rem;
-  }
-
-  .p3d-action {
-    display: inline-flex;
-    min-height: 34px;
-    align-items: center;
-    justify-content: center;
-    padding: 0.48rem 0.78rem;
-    border: 1px solid rgba(232, 197, 71, 0.4);
-    border-radius: 999px;
-    background: transparent;
-    color: var(--gold);
-    font-family: var(--font-mono);
-    font-size: 9px;
-    line-height: 1;
-    letter-spacing: 0.09em;
-    text-decoration: none;
-    text-transform: uppercase;
-    transition:
-      border-color 0.25s ease,
-      background-color 0.25s ease,
-      color 0.25s ease,
-      transform 0.25s ease;
-  }
-
-  .p3d-action:hover,
-  .p3d-action:focus-visible {
-    border-color: var(--gold);
-    background: rgba(232, 197, 71, 0.1);
+  .work-filter:hover,
+  .work-filter:focus-visible {
+    border-color: rgba(232, 197, 71, 0.55);
     color: var(--cream);
     outline: none;
     transform: translateY(-2px);
   }
 
-  .p3d-action--disabled {
-    opacity: 0.35;
+  .work-filter.is-active {
+    border-color: transparent;
+    color: #0c0c0c;
   }
 
-  .p3d-meta {
-    position: absolute;
-    z-index: 20;
-    right: max(1rem, calc((100vw - 1200px) / 2 + 1.5rem));
-    bottom: clamp(1.4rem, 4vh, 2.75rem);
-    display: flex;
+  .work-filter.is-active::before {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .work-result-count {
+    display: inline-flex;
     align-items: center;
-    gap: 1rem;
-    pointer-events: none;
-  }
-
-  .p3d-count {
-    min-width: 64px;
-    color: var(--cream);
+    gap: 0.55rem;
+    color: #707070;
     font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.15em;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
 
-  .p3d-count span {
-    color: var(--gold);
-    font-size: 15px;
+  .work-result-count strong {
+    color: var(--cream);
+    font-size: 13px;
+    font-weight: 500;
   }
 
-  .p3d-progress {
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .work-card {
     position: relative;
-    width: clamp(100px, 12vw, 170px);
-    height: 1px;
+    display: flex;
+    min-height: 585px;
+    flex-direction: column;
     overflow: hidden;
-    background: #2a2a2a;
+    border: 1px solid #252525;
+    border-radius: 1.1rem;
+    background: rgba(18, 18, 18, 0.94);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.2);
+    transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
   }
 
-  .p3d-progress-fill {
+  .work-card:hover {
+    border-color: rgba(232, 197, 71, 0.28);
+    box-shadow: 0 34px 90px rgba(0, 0, 0, 0.38), 0 0 0 1px rgba(232, 197, 71, 0.035);
+    transform: translateY(-6px);
+  }
+
+  .work-visual {
+    position: relative;
+    min-height: 260px;
+    overflow: hidden;
+    border-bottom: 1px solid #242424;
+    background:
+      radial-gradient(circle at 72% 35%, rgba(232, 197, 71, 0.18), transparent 32%),
+      linear-gradient(145deg, #1b1a16, #111 62%);
+  }
+
+  .work-visual::before {
+    content: "";
     position: absolute;
-    inset: 0;
-    background: var(--gradient);
-    transform: scaleX(0);
-    transform-origin: left center;
+    width: 360px;
+    height: 360px;
+    right: -170px;
+    bottom: -230px;
+    border: 1px solid rgba(232, 197, 71, 0.24);
+    border-radius: 50%;
+    box-shadow: 0 0 0 42px rgba(232, 197, 71, 0.035), 0 0 0 84px rgba(232, 197, 71, 0.018);
     transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .p3d-scroll-note {
+  .work-card:hover .work-visual::before {
+    transform: scale(1.08) translate(-8px, -8px);
+  }
+
+  .work-visual[data-variant="2"] {
+    background:
+      radial-gradient(circle at 24% 80%, rgba(224, 123, 57, 0.18), transparent 32%),
+      linear-gradient(135deg, #191512, #101010 58%);
+  }
+
+  .work-visual[data-variant="3"] {
+    background:
+      radial-gradient(circle at 80% 80%, rgba(232, 197, 71, 0.12), transparent 34%),
+      linear-gradient(160deg, #161816, #101010 62%);
+  }
+
+  .work-visual[data-variant="4"] {
+    background:
+      radial-gradient(circle at 24% 28%, rgba(224, 123, 57, 0.13), transparent 30%),
+      linear-gradient(145deg, #191719, #101010 62%);
+  }
+
+  .work-visual[data-category="ai"] {
+    background:
+      radial-gradient(circle at 68% 44%, rgba(232, 197, 71, 0.2), transparent 24%),
+      radial-gradient(circle at 30% 80%, rgba(224, 123, 57, 0.11), transparent 28%),
+      #11110f;
+  }
+
+  .work-visual-grid {
     position: absolute;
-    z-index: 20;
-    left: max(1rem, calc((100vw - 1200px) / 2 + 1.5rem));
-    bottom: clamp(1.4rem, 4vh, 2.75rem);
+    inset: 0;
+    opacity: 0.22;
+    background-image:
+      linear-gradient(rgba(245, 240, 232, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245, 240, 232, 0.08) 1px, transparent 1px);
+    background-size: 32px 32px;
+    mask-image: linear-gradient(135deg, black, transparent 78%);
+  }
+
+  .work-visual-top {
+    position: absolute;
+    z-index: 2;
+    top: 1.1rem;
+    left: 1.1rem;
+    right: 1.1rem;
     display: flex;
     align-items: center;
-    gap: 0.7rem;
-    color: #666;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .work-number,
+  .work-build-label {
+    color: rgba(245, 240, 232, 0.62);
     font-family: var(--font-mono);
     font-size: 9px;
-    line-height: 1;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .work-build-label {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .work-build-label::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 12px rgba(232, 197, 71, 0.8);
+  }
+
+  .work-visual-mark {
+    position: absolute;
+    z-index: 2;
+    left: clamp(1.2rem, 3vw, 2.2rem);
+    bottom: clamp(1.2rem, 3vw, 2rem);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .work-visual-icon {
+    display: grid;
+    width: 58px;
+    height: 58px;
+    place-items: center;
+    border: 1px solid rgba(232, 197, 71, 0.35);
+    border-radius: 50%;
+    background: rgba(12, 12, 12, 0.62);
+    color: var(--gold);
+    font-size: 1.3rem;
+    backdrop-filter: blur(8px);
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s ease;
+  }
+
+  .work-card:hover .work-visual-icon {
+    background: rgba(232, 197, 71, 0.12);
+    transform: rotate(-8deg) scale(1.06);
+  }
+
+  .work-visual-name {
+    margin: 0;
+    color: rgba(245, 240, 232, 0.12);
+    font-family: var(--font-display);
+    font-size: clamp(2.1rem, 4.6vw, 4.1rem);
+    font-style: italic;
+    font-weight: 700;
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+    transition: color 0.4s ease;
+  }
+
+  .work-card:hover .work-visual-name {
+    color: rgba(245, 240, 232, 0.22);
+  }
+
+  .work-card-body {
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+    padding: clamp(1.35rem, 3vw, 2rem);
+  }
+
+  .work-card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .work-category,
+  .work-year {
+    color: var(--gold);
+    font-family: var(--font-mono);
+    font-size: 9px;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    pointer-events: none;
   }
 
-  .p3d-scroll-wheel {
-    position: relative;
-    width: 18px;
-    height: 28px;
-    border: 1px solid #454545;
+  .work-year {
+    color: #666;
+  }
+
+  .work-card-title {
+    margin: 0;
+    color: var(--cream);
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-style: italic;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.035em;
+  }
+
+  .work-card-tagline {
+    margin: 0.55rem 0 0;
+    color: #adadad;
+    font-size: 0.9rem;
+    line-height: 1.45;
+  }
+
+  .work-card-description {
+    display: -webkit-box;
+    margin: 1rem 0 0;
+    overflow: hidden;
+    color: #747474;
+    font-size: 0.78rem;
+    line-height: 1.65;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .work-tech {
+    display: flex;
+    margin: auto 0 0;
+    padding: 1.35rem 0 0;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    list-style: none;
+  }
+
+  .work-tech li {
+    padding: 0.36rem 0.62rem;
+    border: 1px solid #292929;
     border-radius: 999px;
+    color: #8c8c8c;
+    font-family: var(--font-mono);
+    font-size: 8px;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
-  .p3d-scroll-wheel::after {
-    content: "";
-    position: absolute;
-    top: 5px;
-    left: 50%;
-    width: 2px;
-    height: 5px;
+  .work-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-top: 1.4rem;
+    padding-top: 1.15rem;
+    border-top: 1px solid #242424;
+  }
+
+  .work-primary-action,
+  .work-icon-action {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #313131;
     border-radius: 999px;
-    background: var(--gold);
-    transform: translateX(-50%);
-    animation: p3d-wheel 1.8s ease-in-out infinite;
+    background: transparent;
+    color: #a5a5a5;
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease, transform 0.25s ease;
   }
 
-  .p3d-sr-status {
+  .work-primary-action {
+    gap: 0.5rem;
+    margin-right: auto;
+    padding: 0.7rem 1rem;
+    color: var(--cream);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .work-icon-action {
+    width: 40px;
+    padding: 0;
+    font-size: 1rem;
+  }
+
+  .work-primary-action:hover,
+  .work-primary-action:focus-visible,
+  .work-icon-action:hover,
+  .work-icon-action:focus-visible {
+    border-color: rgba(232, 197, 71, 0.6);
+    background: rgba(232, 197, 71, 0.08);
+    color: var(--gold);
+    outline: none;
+    transform: translateY(-2px);
+  }
+
+  .work-sr-status {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -470,654 +492,208 @@ const PROJECTS_STYLES = `
     border: 0;
   }
 
-  @keyframes p3d-wheel {
-    0%, 100% { opacity: 0; transform: translate(-50%, 0); }
-    35% { opacity: 1; }
-    70% { opacity: 0; transform: translate(-50%, 8px); }
-  }
-
-  @media (max-width: 900px) {
-    .p3d-head-note {
-      display: none;
+  @media (max-width: 820px) {
+    .work-head {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
     }
 
-    .p3d-card {
-      width: clamp(320px, 48vw, 410px);
-    }
-  }
-
-  @media (max-width: 700px) {
-    .p3d-section {
-      min-height: 620px;
+    .work-intro {
+      max-width: 620px;
     }
 
-    .p3d-section::before {
-      width: 130vw;
+    .work-grid {
+      grid-template-columns: 1fr;
     }
 
-    .p3d-webgl {
-      display: none;
-    }
-
-    .p3d-head {
-      top: 5.15rem;
-    }
-
-    .p3d-heading {
-      max-width: 290px;
-      font-size: clamp(1.85rem, 9vw, 2.8rem);
-    }
-
-    .p3d-viewport {
-      inset: 8.2rem 0 4.25rem;
-      perspective: 950px;
-    }
-
-    .p3d-card {
-      top: 53%;
-      width: min(84vw, 380px);
-      height: min(64svh, 525px);
-      min-height: 410px;
-    }
-
-    .p3d-media {
-      height: 32%;
-      min-height: 120px;
-    }
-
-    .p3d-card-body {
-      padding: 1rem;
-    }
-
-    .p3d-description {
-      font-size: 0.7rem;
-      -webkit-line-clamp: 2;
-    }
-
-    .p3d-tech li:nth-child(n + 5) {
-      display: none;
-    }
-
-    .p3d-scroll-note {
-      left: 1rem;
-      bottom: 1.25rem;
-    }
-
-    .p3d-meta {
-      right: 1rem;
-      bottom: 1.4rem;
-      gap: 0.6rem;
-    }
-
-    .p3d-progress {
-      width: 78px;
+    .work-card {
+      min-height: 560px;
     }
   }
 
-  @media (max-height: 720px) and (min-width: 701px) {
-    .p3d-head {
-      top: 4.9rem;
+  @media (max-width: 560px) {
+    .work-section {
+      padding: 6.5rem 0;
     }
 
-    .p3d-heading {
-      font-size: 2.25rem;
+    .work-shell {
+      width: min(100% - 1.25rem, 1240px);
     }
 
-    .p3d-viewport {
-      inset: 7.4rem 0 3.5rem;
+    .work-toolbar {
+      align-items: flex-start;
+      flex-direction: column;
     }
 
-    .p3d-card {
-      height: 440px;
+    .work-filters {
+      width: 100%;
+      flex-wrap: nowrap;
     }
 
-    .p3d-media {
-      height: 32%;
+    .work-filter {
+      min-width: 0;
+      flex: 1;
+      padding-inline: 0.65rem;
+    }
+
+    .work-card {
+      min-height: 535px;
+    }
+
+    .work-visual {
+      min-height: 225px;
+    }
+
+    .work-visual-name {
+      font-size: clamp(2.1rem, 12vw, 3.25rem);
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .p3d-section {
-      height: auto;
-      min-height: 0;
-      padding: 7rem 0 5rem;
-      overflow: visible;
-    }
-
-    .p3d-section::before,
-    .p3d-section::after,
-    .p3d-webgl,
-    .p3d-scroll-note,
-    .p3d-meta {
-      display: none;
-    }
-
-    .p3d-head {
-      position: relative;
-      top: auto;
-      left: auto;
-      right: auto;
-      width: min(1200px, calc(100% - 2rem));
-      margin: 0 auto 2rem;
-    }
-
-    .p3d-viewport {
-      position: relative;
-      inset: auto;
-      perspective: none;
-    }
-
-    .p3d-stage {
-      position: relative;
-      inset: auto;
-      display: grid;
-      width: min(1200px, calc(100% - 2rem));
-      margin: 0 auto;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1rem;
-      transform: none !important;
-    }
-
-    .p3d-card {
-      position: relative;
-      top: auto;
-      left: auto;
-      width: auto;
-      height: auto;
-      min-height: 490px;
-      opacity: 1 !important;
-      transform: none !important;
-      pointer-events: auto !important;
-    }
-
-    .p3d-scroll-wheel::after {
-      animation: none;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) and (max-width: 700px) {
-    .p3d-stage {
-      grid-template-columns: 1fr;
+    .work-card,
+    .work-filter,
+    .work-primary-action,
+    .work-icon-action,
+    .work-visual::before,
+    .work-visual-icon {
+      transition-duration: 0.01ms !important;
     }
   }
 `;
 
-function createThreeBackdrop(canvas, getRotation, getPointer) {
-  const renderer = new THREE.WebGLRenderer({
-    canvas,
-    alpha: true,
-    antialias: window.devicePixelRatio <= 1.5,
-    powerPreference: "high-performance",
-  });
-
-  renderer.setClearColor(0x000000, 0);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 30);
-  camera.position.set(0, 1.4, 7.5);
-  camera.lookAt(0, 0, 0);
-
-  const orbit = new THREE.Group();
-  scene.add(orbit);
-
-  scene.add(new THREE.AmbientLight(0xe8c547, 0.18));
-  const keyLight = new THREE.PointLight(0xe8c547, 8, 13, 2);
-  keyLight.position.set(-3.5, 2.5, 4);
-  scene.add(keyLight);
-  const warmLight = new THREE.PointLight(0xe07b39, 5, 11, 2);
-  warmLight.position.set(3.5, -1.5, 2);
-  scene.add(warmLight);
-
-  const materials = [];
-  const geometries = [];
-  [-0.9, 0, 0.9].forEach((y, index) => {
-    const geometry = new THREE.TorusGeometry(2.55 + index * 0.18, 0.008, 5, 140);
-    const material = new THREE.MeshStandardMaterial({
-      color: index === 1 ? 0xe07b39 : 0xe8c547,
-      emissive: index === 1 ? 0xe07b39 : 0xe8c547,
-      emissiveIntensity: 0.6,
-      transparent: true,
-      opacity: index === 1 ? 0.12 : 0.075,
-      roughness: 0.35,
-      metalness: 0.7,
-    });
-    const ring = new THREE.Mesh(geometry, material);
-    ring.position.y = y;
-    ring.rotation.x = Math.PI / 2;
-    ring.scale.setScalar(1 - Math.abs(index - 1) * 0.08);
-    orbit.add(ring);
-    geometries.push(geometry);
-    materials.push(material);
-  });
-
-  const resize = () => {
-    const rect = canvas.getBoundingClientRect();
-    const width = Math.max(1, rect.width);
-    const height = Math.max(1, rect.height);
-    renderer.setSize(width, height, false);
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
-  };
-
-  resize();
-
-  const render = (time) => {
-    const pointer = getPointer();
-    orbit.rotation.y = getRotation() * 0.16 + time * 0.000025;
-    orbit.rotation.z = pointer.x * 0.035;
-    camera.position.x = pointer.x * 0.16;
-    camera.position.y = 1.4 - pointer.y * 0.11;
-    camera.lookAt(0, 0, 0);
-    renderer.render(scene, camera);
-  };
-
-  const dispose = () => {
-    geometries.forEach((geometry) => geometry.dispose());
-    materials.forEach((material) => material.dispose());
-    renderer.dispose();
-  };
-
-  return { resize, render, dispose };
-}
-
-const Projects = () => {
-  const navigate = useNavigate();
-  const { lenis } = useLenisContext();
-  const rootRef = useRef(null);
-  const stageRef = useRef(null);
-  const canvasRef = useRef(null);
-  const cardRefs = useRef([]);
-  const progressRef = useRef(null);
-  const activeRef = useRef(0);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [reducedMotion] = useState(
-    () =>
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-  );
-
-  useLayoutEffect(() => {
-    const root = rootRef.current;
-    const stage = stageRef.current;
-    const canvas = canvasRef.current;
-    const cardCount = projectData.length;
-
-    if (!root || !stage || !cardCount || !lenis) return undefined;
-
-    if (reducedMotion) {
-      const reducedContext = gsap.context(() => {
-        gsap.from(".p3d-head", {
-          autoAlpha: 0,
-          y: 20,
-          duration: 0.7,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: root,
-            start: "top 80%",
-            once: true,
-          },
-        });
-      }, root);
-
-      return () => reducedContext.revert();
-    }
-
-    const step = TAU / cardCount;
-    const motion = {
-      desiredRotation: 0,
-      currentRotation: 0,
-      pointerX: 0,
-      pointerY: 0,
-      pointerTargetX: 0,
-      pointerTargetY: 0,
-    };
-    let frameId = 0;
-    let lastTime = performance.now();
-    let isMobile = window.innerWidth <= 700;
-    let backdrop = null;
-
-    const getPointer = () => ({ x: motion.pointerX, y: motion.pointerY });
-
-    if (!isMobile && canvas) {
-      try {
-        backdrop = createThreeBackdrop(
-          canvas,
-          () => motion.currentRotation,
-          getPointer,
-        );
-      } catch {
-        canvas.style.display = "none";
-      }
-    }
-
-    const syncActiveCard = (nextIndex) => {
-      if (activeRef.current === nextIndex) return;
-      activeRef.current = nextIndex;
-      setActiveIndex(nextIndex);
-      cardRefs.current.forEach((card, index) => {
-        card?.classList.toggle("is-active", index === nextIndex);
-      });
-    };
-
-    const renderCards = (time) => {
-      const width = root.clientWidth;
-      const radiusX = isMobile
-        ? Math.min(width * 0.58, 245)
-        : Math.min(width * 0.35, 470);
-      const radiusZ = isMobile ? 145 : Math.min(width * 0.24, 330);
-      const nearestIndex = clamp(
-        Math.round(motion.currentRotation / step),
-        0,
-        cardCount - 1,
-      );
-
-      syncActiveCard(nearestIndex);
-
-      cardRefs.current.forEach((card, index) => {
-        if (!card) return;
-
-        const angle = index * step - motion.currentRotation;
-        const wrappedAngle = Math.atan2(Math.sin(angle), Math.cos(angle));
-        const cosine = Math.cos(angle);
-        const depth = (cosine + 1) / 2;
-        const focus = Math.pow(depth, isMobile ? 8 : 6);
-        const isActive = index === nearestIndex;
-        const floatAmount = isMobile ? 2.5 : 6;
-        const floatingY = Math.sin(time * 0.00072 + index * 1.37) * floatAmount;
-        const x = Math.sin(angle) * radiusX;
-        const z = cosine * radiusZ + (isActive ? 44 : 0);
-        const scale = isMobile ? 0.78 + focus * 0.22 : 0.72 + focus * 0.28;
-        const opacity = isMobile
-          ? 0.06 + Math.pow(depth, 3.3) * 0.94
-          : 0.14 + Math.pow(depth, 2.3) * 0.86;
-        const rotateY = -Math.sin(wrappedAngle) * (isMobile ? 8 : 18);
-        const rotateX =
-          Math.sin(time * 0.00052 + index) * (isMobile ? 0.25 : 0.7);
-
-        card.style.transform = [
-          "translate(-50%, -50%)",
-          `translate3d(${x.toFixed(2)}px, ${floatingY.toFixed(2)}px, ${z.toFixed(2)}px)`,
-          `rotateY(${rotateY.toFixed(2)}deg)`,
-          `rotateX(${rotateX.toFixed(2)}deg)`,
-          `scale(${scale.toFixed(4)})`,
-        ].join(" ");
-        card.style.opacity = opacity.toFixed(3);
-        card.style.zIndex = String(Math.round(500 + z));
-      });
-
-      stage.style.transform = [
-        `translate3d(${(motion.pointerX * (isMobile ? 2 : 13)).toFixed(2)}px,`,
-        `${(motion.pointerY * (isMobile ? 1 : 8)).toFixed(2)}px, 0)`,
-        `rotateX(${(-motion.pointerY * (isMobile ? 0 : 1.25)).toFixed(2)}deg)`,
-        `rotateY(${(motion.pointerX * (isMobile ? 0 : 1.65)).toFixed(2)}deg)`,
-      ].join(" ");
-    };
-
-    const animate = (time) => {
-      const delta = Math.min((time - lastTime) / 1000, 0.05);
-      const rotationEase = 1 - Math.exp(-delta * 8);
-      const pointerEase = 1 - Math.exp(-delta * 5.5);
-      lastTime = time;
-
-      motion.currentRotation +=
-        (motion.desiredRotation - motion.currentRotation) * rotationEase;
-      motion.pointerX +=
-        (motion.pointerTargetX - motion.pointerX) * pointerEase;
-      motion.pointerY +=
-        (motion.pointerTargetY - motion.pointerY) * pointerEase;
-
-      renderCards(time);
-      backdrop?.render(time);
-      frameId = window.requestAnimationFrame(animate);
-    };
-
-    const handlePointerMove = (event) => {
-      if (isMobile) return;
-      const rect = root.getBoundingClientRect();
-      motion.pointerTargetX = clamp(
-        ((event.clientX - rect.left) / rect.width) * 2 - 1,
-        -1,
-        1,
-      );
-      motion.pointerTargetY = clamp(
-        ((event.clientY - rect.top) / rect.height) * 2 - 1,
-        -1,
-        1,
-      );
-    };
-
-    const handlePointerLeave = () => {
-      motion.pointerTargetX = 0;
-      motion.pointerTargetY = 0;
-    };
-
-    const handleResize = () => {
-      isMobile = window.innerWidth <= 700;
-      backdrop?.resize();
-    };
-
-    root.addEventListener("pointermove", handlePointerMove, { passive: true });
-    root.addEventListener("pointerleave", handlePointerLeave);
-    window.addEventListener("resize", handleResize, { passive: true });
-
-    const context = gsap.context(() => {
-      gsap.from(".p3d-eyebrow, .p3d-heading, .p3d-head-note", {
-        autoAlpha: 0,
-        y: 22,
-        duration: 0.85,
-        stagger: 0.08,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: root,
-          start: "top 78%",
-          once: true,
-        },
-      });
-
-      gsap.to(motion, {
-        desiredRotation: (cardCount - 1) * step,
-        ease: "none",
-        scrollTrigger: {
-          trigger: root,
-          scroller: document.documentElement,
-          start: "top top",
-          end: () =>
-            `+=${Math.max(1, cardCount - 1) * window.innerHeight * 0.92}`,
-          pin: root,
-          pinSpacing: true,
-          scrub: 0.75,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onRefresh: (self) => {
-            motion.desiredRotation =
-              self.progress * (cardCount - 1) * step;
-          },
-          onToggle: (self) => {
-            root.classList.toggle("is-pinned", self.isActive);
-          },
-        },
-      });
-    }, root);
-
-    cardRefs.current.forEach((card, index) => {
-      card?.classList.toggle("is-active", index === 0);
-    });
-    renderCards(performance.now());
-    frameId = window.requestAnimationFrame(animate);
-
-    return () => {
-      window.cancelAnimationFrame(frameId);
-      root.removeEventListener("pointermove", handlePointerMove);
-      root.removeEventListener("pointerleave", handlePointerLeave);
-      window.removeEventListener("resize", handleResize);
-      backdrop?.dispose();
-      context.revert();
-    };
-  }, [lenis, reducedMotion]);
-
-  const progress =
-    projectData.length > 1 ? activeIndex / (projectData.length - 1) : 1;
+function ProjectCard({ project, index, onOpen }) {
+  const isAI = project.category === "ai";
+  const categoryLabel = isAI ? "AI / Machine Learning" : "Full Stack";
 
   return (
-    <section
-      ref={rootRef}
-      id="projects"
-      className="p3d-section"
-      aria-labelledby="projects-heading"
+    <motion.article
+      layout
+      className="work-card"
+      initial={{ opacity: 0, y: 26 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 18, scale: 0.98 }}
+      transition={{ duration: 0.45, delay: Math.min(index * 0.045, 0.22), ease: [0.22, 1, 0.36, 1] }}
     >
+      <div className="work-visual" data-category={project.category} data-variant={(index % 4) + 1} aria-hidden="true">
+        <div className="work-visual-grid" />
+        <div className="work-visual-top">
+          <span className="work-number">Project / {String(index + 1).padStart(2, "0")}</span>
+          <span className="work-build-label">Selected build</span>
+        </div>
+        <div className="work-visual-mark">
+          <span className="work-visual-icon">{isAI ? <FiCpu /> : <FiLayers />}</span>
+          <p className="work-visual-name">{project.title}</p>
+        </div>
+      </div>
+
+      <div className="work-card-body">
+        <div className="work-card-meta">
+          <span className="work-category">{categoryLabel}</span>
+          <span className="work-year">{project.year}</span>
+        </div>
+        <h3 className="work-card-title">{project.title}</h3>
+        <p className="work-card-tagline">{project.tagline}</p>
+        <p className="work-card-description">{project.description}</p>
+
+        <ul className="work-tech" aria-label={`${project.title} technologies`}>
+          {project.techStack.slice(0, 5).map((tech) => (
+            <li key={tech}>{tech}</li>
+          ))}
+        </ul>
+
+        <div className="work-actions">
+          <button type="button" className="work-primary-action" onClick={() => onOpen(project.path)}>
+            Case study <FiArrowUpRight aria-hidden="true" />
+          </button>
+          <a
+            className="work-icon-action"
+            href={project.github}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`View ${project.title} on GitHub`}
+            title="View GitHub repository"
+          >
+            <FiGithub aria-hidden="true" />
+          </a>
+          {project.liveDemo ? (
+            <a
+              className="work-icon-action"
+              href={project.liveDemo}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`Open ${project.title} live demo`}
+              title="Open live demo"
+            >
+              <FiArrowUpRight aria-hidden="true" />
+            </a>
+          ) : null}
+        </div>
+      </div>
+    </motion.article>
+  );
+}
+
+function Projects() {
+  const navigate = useNavigate();
+  const [activeFilter, setActiveFilter] = useState("all");
+
+  const visibleProjects = useMemo(
+    () =>
+      activeFilter === "all"
+        ? projectData
+        : projectData.filter((project) => project.category === activeFilter),
+    [activeFilter],
+  );
+
+  return (
+    <section id="projects" className="work-section" aria-labelledby="work-heading">
       <style>{PROJECTS_STYLES}</style>
-      <canvas ref={canvasRef} className="p3d-webgl" aria-hidden="true" />
+      <div className="work-shell">
+        <header className="work-head">
+          <div>
+            <p className="work-kicker">Selected work</p>
+            <h2 id="work-heading" className="work-heading">
+              Ideas turned into <span>working products.</span>
+            </h2>
+          </div>
+          <p className="work-intro">
+            A collection of full-stack platforms and intelligent systems—designed, engineered, and shipped from first idea to final interface.
+          </p>
+        </header>
 
-      <div className="p3d-head">
-        <div>
-          <p className="p3d-eyebrow font-mono-label">— 03. SELECTED PROJECTS</p>
-          <h2 id="projects-heading" className="p3d-heading">
-            {/* Built with intent. <span>Shaped by craft.</span> */}
-          </h2>
-        </div>
-        {/* <p className="p3d-head-note">
-          A circular study in product thinking, full-stack engineering, and
-          considered interaction.
-        </p> */}
-      </div>
-
-      <div className="p3d-viewport">
-        <div ref={stageRef} className="p3d-stage">
-          {projectData.map((project, index) => {
-            const image =
-              project.image || project.thumbnail || project.screenshots?.[0];
-            const technologies = (
-              project.techStack ||
-              project.technologies ||
-              []
-            ).slice(0, 6);
-            const liveDemo = project.liveDemo || project.demo;
-            const isInteractive = reducedMotion || activeIndex === index;
-
-            return (
-              <article
-                key={project.id}
-                ref={(node) => {
-                  cardRefs.current[index] = node;
-                }}
-                className={`p3d-card${
-                  reducedMotion || activeIndex === index ? " is-active" : ""
-                }`}
-                style={{ "--card-accent": CARD_ACCENTS[index % CARD_ACCENTS.length] }}
-                aria-hidden={!isInteractive}
+        <div className="work-toolbar">
+          <div className="work-filters" aria-label="Filter projects">
+            {FILTERS.map((filter) => (
+              <button
+                key={filter.id}
+                type="button"
+                className={`work-filter${activeFilter === filter.id ? " is-active" : ""}`}
+                aria-pressed={activeFilter === filter.id}
+                onClick={() => setActiveFilter(filter.id)}
               >
-                <div className="p3d-media">
-                  <span className="p3d-image-fallback" aria-hidden="true">
-                    {project.name?.charAt(0)}
-                  </span>
-                  {image && (
-                    <img
-                      src={image}
-                      alt={`${project.name} project preview`}
-                      loading={index === 0 ? "eager" : "lazy"}
-                      decoding="async"
-                      onError={(event) => {
-                        event.currentTarget.hidden = true;
-                      }}
-                    />
-                  )}
-                  <span className="p3d-index" aria-hidden="true">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                </div>
-
-                <div className="p3d-card-body">
-                  <p className="p3d-card-kicker">
-                    {project.type || project.tagline || "Featured build"}
-                  </p>
-                  <h3>
-                    <button
-                      type="button"
-                      className="p3d-title-button"
-                      tabIndex={isInteractive ? 0 : -1}
-                      onClick={() => navigate(project.path)}
-                      aria-label={`Open ${project.name} case study`}
-                    >
-                      {project.name}
-                    </button>
-                  </h3>
-                  <p className="p3d-description">{project.description}</p>
-
-                  <ul className="p3d-tech" aria-label={`${project.name} tech stack`}>
-                    {technologies.map((technology) => (
-                      <li key={technology}>{technology}</li>
-                    ))}
-                  </ul>
-
-                  <div className="p3d-actions">
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="p3d-action"
-                      tabIndex={isInteractive ? 0 : -1}
-                      aria-label={`View ${project.name} source code on GitHub`}
-                    >
-                      GitHub ↗
-                    </a>
-                    {liveDemo ? (
-                      <a
-                        href={liveDemo}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="p3d-action"
-                        tabIndex={isInteractive ? 0 : -1}
-                        aria-label={`Open ${project.name} live demo`}
-                      >
-                        Live Demo ↗
-                      </a>
-                    ) : (
-                      <span
-                        className="p3d-action p3d-action--disabled"
-                        aria-label="Live demo unavailable"
-                      >
-                        Demo soon
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </article>
-            );
-          })}
+                <span>{filter.label}</span>
+              </button>
+            ))}
+          </div>
+          <div className="work-result-count" aria-hidden="true">
+            Showing <strong>{String(visibleProjects.length).padStart(2, "0")}</strong>
+          </div>
         </div>
-      </div>
 
-      <div className="p3d-scroll-note" aria-hidden="true">
-        <span className="p3d-scroll-wheel" />
-        <span>
-          {activeIndex === projectData.length - 1
-            ? "Keep scrolling to continue"
-            : "Scroll to orbit"}
-        </span>
-      </div>
-
-      <div className="p3d-meta" aria-hidden="true">
-        <p className="p3d-count">
-          <span>{String(activeIndex + 1).padStart(2, "0")}</span>
-          {" / "}
-          {String(projectData.length).padStart(2, "0")}
+        <p className="work-sr-status" aria-live="polite">
+          Showing {visibleProjects.length} {activeFilter === "all" ? "total" : activeFilter} projects.
         </p>
-        <div className="p3d-progress">
-          <span
-            ref={progressRef}
-            className="p3d-progress-fill"
-            style={{ transform: `scaleX(${progress})` }}
-          />
-        </div>
-      </div>
 
-      <p className="p3d-sr-status" aria-live="polite" aria-atomic="true">
-        Project {activeIndex + 1} of {projectData.length}:{" "}
-        {projectData[activeIndex]?.name}
-      </p>
+        <motion.div layout className="work-grid">
+          <AnimatePresence mode="popLayout">
+            {visibleProjects.map((project, index) => (
+              <ProjectCard key={project.id} project={project} index={index} onOpen={navigate} />
+            ))}
+          </AnimatePresence>
+        </motion.div>
+      </div>
     </section>
   );
-};
+}
 
 export default Projects;
