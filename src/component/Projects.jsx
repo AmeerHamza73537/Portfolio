@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion as Motion } from "framer-motion";
 import { FiArrowUpRight, FiCpu, FiGithub, FiLayers } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { projectData } from "../project/ProjectData.jsx";
@@ -679,7 +679,7 @@ function ProjectCard({ project, index, onOpen }) {
   const categoryLabel = isAI ? "AI / Machine Learning" : "Full Stack";
 
   return (
-    <motion.article
+    <Motion.article
       layout
       className="work-card"
       initial={{ opacity: 0, y: 26 }}
@@ -758,7 +758,7 @@ function ProjectCard({ project, index, onOpen }) {
           ) : null}
         </div>
       </div>
-    </motion.article>
+    </Motion.article>
   );
 }
 
@@ -826,20 +826,20 @@ function Projects() {
           Showing {displayedProjects.length} of {visibleProjects.length} {activeFilter === "all" ? "total" : activeFilter} projects.
         </p>
 
-        <motion.div layout className="work-grid">
+        <Motion.div layout className="work-grid">
           <AnimatePresence mode="popLayout">
             {displayedProjects.map((project, index) => (
               <ProjectCard key={project.id} project={project} index={index} onOpen={navigate} />
             ))}
           </AnimatePresence>
-        </motion.div>
+        </Motion.div>
 
         {remainingProjects > 0 ? (
-          <motion.div className="work-more-wrap" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          <Motion.div className="work-more-wrap" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <button type="button" className="work-more-button" onClick={() => setShowAllProjects(true)}>
               Show More <span>+{remainingProjects}</span>
             </button>
-          </motion.div>
+          </Motion.div>
         ) : null}
       </div>
     </section>
