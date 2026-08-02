@@ -31,13 +31,18 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-input,
-textarea {
-  cursor: text;
-}
-
 body:hover {
   cursor: none;
+}
+
+@media (pointer: fine) {
+  html,
+  body,
+  body *,
+  body *::before,
+  body *::after {
+    cursor: none !important;
+  }
 }
 
 .font-display {

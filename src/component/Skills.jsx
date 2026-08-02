@@ -159,7 +159,7 @@ const SkillsSection = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} style={{ background: "#0f0f0f", padding: "80px 60px", fontFamily: "'DM Sans', sans-serif" }}>
+    <section id="skills" ref={sectionRef} style={{ background: "#0f0f0f", padding: "80px 60px", fontFamily: "'DM Sans', sans-serif" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500&display=swap');
 

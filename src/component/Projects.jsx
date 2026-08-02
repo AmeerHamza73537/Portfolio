@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { FiArrowUpRight, FiCpu, FiGithub, FiLayers } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { projectData } from "../project/ProjectData.jsx";

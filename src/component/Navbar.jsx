@@ -1,11 +1,12 @@
 import React, { useRef, useEffect, useCallback, useState } from "react";
 import gsap from "gsap";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useLenisContext } from "../context/useLenisContext.js";
 
 const links = [
   { name: "Home", id: "home" },
   { name: "About", id: "about" },
-  { name: "Skill", id: "skills" },
+  { name: "Skills", id: "skills" },
   { name: "Experience", id: "experience" },
   { name: "Projects", id: "projects" },
   { name: "Contact", id: "contact" },
@@ -48,6 +49,8 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { lenis, scrollToId } = useLenisContext();
+  const location = useLocation();
+  const routerNavigate = useNavigate();
 
   useEffect(() => {
     if (!lenis) return undefined;
@@ -60,10 +63,16 @@ const Navbar = () => {
 
   const navigate = useCallback(
     (id) => {
-      scrollToId(id);
       setMenuOpen(false);
+
+      if (location.pathname !== "/") {
+        routerNavigate("/", { state: { scrollTo: id } });
+        return;
+      }
+
+      scrollToId(id);
     },
-    [scrollToId]
+    [location.pathname, routerNavigate, scrollToId]
   );
 
   return (
