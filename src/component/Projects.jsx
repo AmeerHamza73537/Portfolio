@@ -252,6 +252,40 @@ const PROJECTS_STYLES = `
     transform: scale(1.08) translate(-8px, -8px);
   }
 
+  .work-visual.has-image {
+    background: #111;
+  }
+
+  .work-visual.has-image::before {
+    display: none;
+  }
+
+  .work-visual.has-image::after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(8, 8, 8, 0.5), transparent 35%, rgba(8, 8, 8, 0.08));
+    pointer-events: none;
+  }
+
+  .work-preview {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    object-fit: cover;
+    object-position: center top;
+    filter: saturate(0.84) brightness(0.82);
+    transform: scale(1.01);
+    transition: filter 0.55s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .work-card:hover .work-preview {
+    filter: saturate(1) brightness(0.96);
+    transform: scale(1.035);
+  }
+
   .work-visual[data-variant="2"] {
     background:
       radial-gradient(circle at 24% 80%, rgba(224, 123, 57, 0.18), transparent 32%),
@@ -500,6 +534,51 @@ const PROJECTS_STYLES = `
     transform: translateY(-2px);
   }
 
+  .work-more-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  .work-more-button {
+    display: inline-flex;
+    min-height: 46px;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+    padding: 0.8rem 1.35rem;
+    border: 1px solid rgba(232, 197, 71, 0.42);
+    border-radius: 999px;
+    background: rgba(20, 20, 20, 0.86);
+    color: var(--cream);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+  }
+
+  .work-more-button span {
+    display: grid;
+    min-width: 23px;
+    height: 23px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--gradient);
+    color: #0c0c0c;
+    font-size: 8px;
+  }
+
+  .work-more-button:hover,
+  .work-more-button:focus-visible {
+    border-color: var(--gold);
+    background: rgba(232, 197, 71, 0.08);
+    color: var(--gold);
+    outline: none;
+    transform: translateY(-2px);
+  }
+
   .work-sr-status {
     position: absolute;
     width: 1px;
@@ -596,6 +675,7 @@ const PROJECTS_STYLES = `
 
 function ProjectCard({ project, index, onOpen }) {
   const isAI = project.category === "ai";
+  const hasPreview = Boolean(project.previewImage);
   const categoryLabel = isAI ? "AI / Machine Learning" : "Full Stack";
 
   return (
@@ -607,16 +687,32 @@ function ProjectCard({ project, index, onOpen }) {
       exit={{ opacity: 0, y: 18, scale: 0.98 }}
       transition={{ duration: 0.45, delay: Math.min(index * 0.045, 0.22), ease: [0.22, 1, 0.36, 1] }}
     >
-      <div className="work-visual" data-category={project.category} data-variant={(index % 4) + 1} aria-hidden="true">
-        <div className="work-visual-grid" />
+      <div
+        className={`work-visual${hasPreview ? " has-image" : ""}`}
+        data-category={project.category}
+        data-variant={(index % 4) + 1}
+      >
+        {hasPreview ? (
+          <img
+            className="work-preview"
+            src={project.previewImage}
+            alt={`${project.title} interface preview`}
+            loading={index < 3 ? "eager" : "lazy"}
+            decoding="async"
+          />
+        ) : (
+          <div className="work-visual-grid" aria-hidden="true" />
+        )}
         <div className="work-visual-top">
           <span className="work-number">Project / {String(index + 1).padStart(2, "0")}</span>
           <span className="work-build-label">Selected build</span>
         </div>
-        <div className="work-visual-mark">
-          <span className="work-visual-icon">{isAI ? <FiCpu /> : <FiLayers />}</span>
-          <p className="work-visual-name">{project.title}</p>
-        </div>
+        {!hasPreview ? (
+          <div className="work-visual-mark" aria-hidden="true">
+            <span className="work-visual-icon">{isAI ? <FiCpu /> : <FiLayers />}</span>
+            <p className="work-visual-name">{project.title}</p>
+          </div>
+        ) : null}
       </div>
 
       <div className="work-card-body">
@@ -669,6 +765,7 @@ function ProjectCard({ project, index, onOpen }) {
 function Projects() {
   const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = useState("all");
+  const [showAllProjects, setShowAllProjects] = useState(false);
 
   const visibleProjects = useMemo(
     () => {
@@ -681,6 +778,14 @@ function Projects() {
     },
     [activeFilter],
   );
+
+  const displayedProjects = showAllProjects ? visibleProjects : visibleProjects.slice(0, 6);
+  const remainingProjects = visibleProjects.length - displayedProjects.length;
+
+  const handleFilterChange = (filterId) => {
+    setActiveFilter(filterId);
+    setShowAllProjects(false);
+  };
 
   return (
     <section id="projects" className="work-section" aria-labelledby="work-heading">
@@ -706,7 +811,7 @@ function Projects() {
                 type="button"
                 className={`work-filter${activeFilter === filter.id ? " is-active" : ""}`}
                 aria-pressed={activeFilter === filter.id}
-                onClick={() => setActiveFilter(filter.id)}
+                onClick={() => handleFilterChange(filter.id)}
               >
                 <span>{filter.label}</span>
               </button>
@@ -718,16 +823,24 @@ function Projects() {
         </div>
 
         <p className="work-sr-status" aria-live="polite">
-          Showing {visibleProjects.length} {activeFilter === "all" ? "total" : activeFilter} projects.
+          Showing {displayedProjects.length} of {visibleProjects.length} {activeFilter === "all" ? "total" : activeFilter} projects.
         </p>
 
         <motion.div layout className="work-grid">
           <AnimatePresence mode="popLayout">
-            {visibleProjects.map((project, index) => (
+            {displayedProjects.map((project, index) => (
               <ProjectCard key={project.id} project={project} index={index} onOpen={navigate} />
             ))}
           </AnimatePresence>
         </motion.div>
+
+        {remainingProjects > 0 ? (
+          <motion.div className="work-more-wrap" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <button type="button" className="work-more-button" onClick={() => setShowAllProjects(true)}>
+              Show More <span>+{remainingProjects}</span>
+            </button>
+          </motion.div>
+        ) : null}
       </div>
     </section>
   );
