@@ -10,6 +10,26 @@ const FILTERS = [
   { id: "ai", label: "AI" },
 ];
 
+const AI_PROJECT_ORDER = new Map([
+  ["meridian", 0],
+  ["campus-ai", 1],
+  ["drive-price", 2],
+]);
+
+const prioritizeProjects = (projects) =>
+  [...projects].sort((first, second) => {
+    const firstIsAI = first.category === "ai";
+    const secondIsAI = second.category === "ai";
+
+    if (firstIsAI && !secondIsAI) return -1;
+    if (!firstIsAI && secondIsAI) return 1;
+    if (firstIsAI && secondIsAI) {
+      return (AI_PROJECT_ORDER.get(first.id) ?? 99) - (AI_PROJECT_ORDER.get(second.id) ?? 99);
+    }
+
+    return 0;
+  });
+
 const PROJECTS_STYLES = `
   .work-section {
     position: relative;
@@ -182,14 +202,14 @@ const PROJECTS_STYLES = `
 
   .work-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.85rem;
   }
 
   .work-card {
     position: relative;
     display: flex;
-    min-height: 585px;
+    min-height: 500px;
     flex-direction: column;
     overflow: hidden;
     border: 1px solid #252525;
@@ -207,7 +227,7 @@ const PROJECTS_STYLES = `
 
   .work-visual {
     position: relative;
-    min-height: 260px;
+    min-height: 190px;
     overflow: hidden;
     border-bottom: 1px solid #242424;
     background:
@@ -316,14 +336,14 @@ const PROJECTS_STYLES = `
 
   .work-visual-icon {
     display: grid;
-    width: 58px;
-    height: 58px;
+    width: 48px;
+    height: 48px;
     place-items: center;
     border: 1px solid rgba(232, 197, 71, 0.35);
     border-radius: 50%;
     background: rgba(12, 12, 12, 0.62);
     color: var(--gold);
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     backdrop-filter: blur(8px);
     transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s ease;
   }
@@ -337,7 +357,7 @@ const PROJECTS_STYLES = `
     margin: 0;
     color: rgba(245, 240, 232, 0.12);
     font-family: var(--font-display);
-    font-size: clamp(2.1rem, 4.6vw, 4.1rem);
+    font-size: clamp(1.75rem, 3vw, 2.7rem);
     font-style: italic;
     font-weight: 700;
     line-height: 0.9;
@@ -354,7 +374,7 @@ const PROJECTS_STYLES = `
     min-height: 0;
     flex: 1;
     flex-direction: column;
-    padding: clamp(1.35rem, 3vw, 2rem);
+    padding: clamp(1.1rem, 2vw, 1.45rem);
   }
 
   .work-card-meta {
@@ -382,7 +402,7 @@ const PROJECTS_STYLES = `
     margin: 0;
     color: var(--cream);
     font-family: var(--font-display);
-    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-size: clamp(1.7rem, 2.5vw, 2.35rem);
     font-style: italic;
     font-weight: 700;
     line-height: 1;
@@ -392,7 +412,7 @@ const PROJECTS_STYLES = `
   .work-card-tagline {
     margin: 0.55rem 0 0;
     color: #adadad;
-    font-size: 0.9rem;
+    font-size: 0.82rem;
     line-height: 1.45;
   }
 
@@ -401,7 +421,7 @@ const PROJECTS_STYLES = `
     margin: 1rem 0 0;
     overflow: hidden;
     color: #747474;
-    font-size: 0.78rem;
+    font-size: 0.72rem;
     line-height: 1.65;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
@@ -410,7 +430,7 @@ const PROJECTS_STYLES = `
   .work-tech {
     display: flex;
     margin: auto 0 0;
-    padding: 1.35rem 0 0;
+    padding: 1rem 0 0;
     flex-wrap: wrap;
     gap: 0.45rem;
     list-style: none;
@@ -432,15 +452,15 @@ const PROJECTS_STYLES = `
     display: flex;
     align-items: center;
     gap: 0.55rem;
-    margin-top: 1.4rem;
-    padding-top: 1.15rem;
+    margin-top: 1.05rem;
+    padding-top: 0.9rem;
     border-top: 1px solid #242424;
   }
 
   .work-primary-action,
   .work-icon-action {
     display: inline-flex;
-    min-height: 40px;
+    min-height: 36px;
     align-items: center;
     justify-content: center;
     border: 1px solid #313131;
@@ -455,7 +475,7 @@ const PROJECTS_STYLES = `
   .work-primary-action {
     gap: 0.5rem;
     margin-right: auto;
-    padding: 0.7rem 1rem;
+    padding: 0.6rem 0.85rem;
     color: var(--cream);
     font-family: var(--font-mono);
     font-size: 9px;
@@ -464,7 +484,7 @@ const PROJECTS_STYLES = `
   }
 
   .work-icon-action {
-    width: 40px;
+    width: 36px;
     padding: 0;
     font-size: 1rem;
   }
@@ -492,6 +512,20 @@ const PROJECTS_STYLES = `
     border: 0;
   }
 
+  @media (max-width: 1050px) {
+    .work-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .work-card {
+      min-height: 535px;
+    }
+
+    .work-visual {
+      min-height: 225px;
+    }
+  }
+
   @media (max-width: 820px) {
     .work-head {
       grid-template-columns: 1fr;
@@ -502,12 +536,11 @@ const PROJECTS_STYLES = `
       max-width: 620px;
     }
 
+  }
+
+  @media (max-width: 700px) {
     .work-grid {
       grid-template-columns: 1fr;
-    }
-
-    .work-card {
-      min-height: 560px;
     }
   }
 
@@ -596,7 +629,7 @@ function ProjectCard({ project, index, onOpen }) {
         <p className="work-card-description">{project.description}</p>
 
         <ul className="work-tech" aria-label={`${project.title} technologies`}>
-          {project.techStack.slice(0, 5).map((tech) => (
+          {project.techStack.slice(0, 4).map((tech) => (
             <li key={tech}>{tech}</li>
           ))}
         </ul>
@@ -638,10 +671,14 @@ function Projects() {
   const [activeFilter, setActiveFilter] = useState("all");
 
   const visibleProjects = useMemo(
-    () =>
-      activeFilter === "all"
-        ? projectData
-        : projectData.filter((project) => project.category === activeFilter),
+    () => {
+      const filteredProjects =
+        activeFilter === "all"
+          ? projectData
+          : projectData.filter((project) => project.category === activeFilter);
+
+      return prioritizeProjects(filteredProjects);
+    },
     [activeFilter],
   );
 
