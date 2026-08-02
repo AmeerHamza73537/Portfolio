@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
-import about from "../assets/about.png";
+import profilePortrait from "../assets/ameer-hamza-portrait.png";
 
 const About = () => {
   const rootRef = useRef(null);
@@ -57,7 +57,11 @@ const About = () => {
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
           <div className="w-full lg:w-1/2 flex justify-center about-photo-target about-photo animate-on-scroll">
             <div className="about-photo-frame">
-              <img src={about} alt="About" />
+              <img src={profilePortrait} alt="Portrait of Ameer Hamza" />
+              <div className="about-photo-badge">
+                <span aria-hidden="true" />
+                Full-Stack + AI
+              </div>
             </div>
           </div>
 
