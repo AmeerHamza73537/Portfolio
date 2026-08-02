@@ -1189,6 +1189,37 @@ body:hover {
   background: #141414;
 }
 
+.mockup-body.has-project-image {
+  position: relative;
+  overflow: hidden;
+  background: #0d0d0d;
+}
+
+.mockup-body.has-project-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(245, 240, 232, 0.035);
+  background: linear-gradient(180deg, transparent 70%, rgba(12, 12, 12, 0.18));
+  pointer-events: none;
+}
+
+.mockup-project-image {
+  display: block;
+  width: 100%;
+  height: 440px;
+  object-fit: cover;
+  object-position: top center;
+  filter: saturate(0.92) brightness(0.9);
+  transform: scale(1.01);
+  transition: filter 0.45s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.case-mockup:hover .mockup-project-image {
+  filter: saturate(1) brightness(1);
+  transform: scale(1.035);
+}
+
 .mockup-watermark {
   font-family: var(--font-display);
   font-style: italic;
@@ -1522,6 +1553,14 @@ body:hover {
 }
 
 @media (max-width: 768px) {
+  .mockup-body {
+    min-height: 290px;
+  }
+
+  .mockup-project-image {
+    height: 290px;
+  }
+
   .case-back-btn {
     top: 0.7rem;
     left: 0.7rem;

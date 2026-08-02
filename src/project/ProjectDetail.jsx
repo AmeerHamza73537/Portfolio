@@ -250,8 +250,18 @@ function ProjectDetail() {
                   </div>
                   <div className="mockup-url">https://portfolio.dev/{project.projectId || project.id}</div>
                 </div>
-                <div className="mockup-body">
-                  <span className="mockup-watermark">{project.title}</span>
+                <div className={`mockup-body${project.previewImage ? " has-project-image" : ""}`}>
+                  {project.previewImage ? (
+                    <img
+                      className="mockup-project-image"
+                      src={project.previewImage}
+                      alt={`${project.title} project interface`}
+                      loading="eager"
+                      decoding="async"
+                    />
+                  ) : (
+                    <span className="mockup-watermark">{project.title}</span>
+                  )}
                 </div>
               </div>
             </div>
