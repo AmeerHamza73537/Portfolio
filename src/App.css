@@ -1011,6 +1011,10 @@ body:hover {
   overflow: hidden;
 }
 
+.case-hero > .site-container {
+  max-width: 1580px;
+}
+
 .case-hero-glow {
   position: absolute;
   width: 800px;
@@ -1024,10 +1028,17 @@ body:hover {
 
 .case-hero-grid {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: clamp(1.5rem, 4vw, 3.5rem);
+  grid-template-columns: minmax(0, 0.82fr) minmax(680px, 1.18fr);
+  gap: clamp(2rem, 4vw, 4.5rem);
   align-items: center;
   width: 100%;
+}
+
+.case-hero-right {
+  width: 100%;
+  max-width: 900px;
+  min-width: 0;
+  justify-self: end;
 }
 
 .case-label {
@@ -1118,6 +1129,7 @@ body:hover {
 
 .case-mockup {
   position: relative;
+  width: 100%;
   border-radius: 16px;
   padding: 2px;
 }
@@ -1183,7 +1195,8 @@ body:hover {
 }
 
 .mockup-body {
-  min-height: 440px;
+  min-height: 0;
+  aspect-ratio: 2.08 / 1;
   display: grid;
   place-items: center;
   background: #141414;
@@ -1207,17 +1220,15 @@ body:hover {
 .mockup-project-image {
   display: block;
   width: 100%;
-  height: 440px;
-  object-fit: cover;
+  height: 100%;
+  object-fit: contain;
   object-position: top center;
   filter: saturate(0.92) brightness(0.9);
-  transform: scale(1.01);
-  transition: filter 0.45s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: filter 0.45s ease;
 }
 
 .case-mockup:hover .mockup-project-image {
   filter: saturate(1) brightness(1);
-  transform: scale(1.035);
 }
 
 .mockup-watermark {
@@ -1541,6 +1552,18 @@ body:hover {
   opacity: 1;
 }
 
+@media (max-width: 1200px) {
+  .case-hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .case-hero-right {
+    order: 2;
+    max-width: 900px;
+    justify-self: center;
+  }
+}
+
 @media (max-width: 1024px) {
   .case-hero-grid,
   .case-problem-grid {
@@ -1549,16 +1572,18 @@ body:hover {
 
   .case-hero-right {
     order: 2;
+    max-width: 900px;
+    justify-self: center;
   }
 }
 
 @media (max-width: 768px) {
   .mockup-body {
-    min-height: 290px;
+    min-height: 0;
   }
 
   .mockup-project-image {
-    height: 290px;
+    height: 100%;
   }
 
   .case-back-btn {
