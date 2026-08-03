@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import { SiLangchain, SiOpenai } from "react-icons/si";
+import { LuBrainCircuit, LuDatabaseZap } from "react-icons/lu";
 import tailwindIcon from "../assets/image.png";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -36,11 +38,10 @@ const skills = [
       { name: "NumPy", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original.svg" },
       { name: "Pandas", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg" },
       { name: "Matplotlib", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matplotlib/matplotlib-original.svg" },
-      { name: "LangChain", badge: "LC" },
-      { name: "OpenAI API", badge: "OA" },
-      { name: "LLM", badge: "AI" },
-      { name: "Anthropic API", badge: "A" },
-      { name: "Groq API", badge: "G" },
+      { name: "LangChain", Icon: SiLangchain },
+      { name: "OpenAI API", Icon: SiOpenai },
+      { name: "LLM", Icon: LuBrainCircuit, iconColor: "#c9972c" },
+      { name: "RAG", Icon: LuDatabaseZap, iconColor: "#e07b39" },
     ],
   },
   {
@@ -96,7 +97,7 @@ const CustomIcon = ({ type, size = 40 }) => {
   return null;
 };
 
-const Chip = ({ name, icon, invert, customIcon, badge }) => {
+const Chip = ({ name, icon, invert, customIcon, Icon, iconColor }) => {
   const chipRef = useRef(null);
 
   const handleMouseEnter = () => {
@@ -114,13 +115,13 @@ const Chip = ({ name, icon, invert, customIcon, badge }) => {
   return (
     <div className="chip" ref={chipRef} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <span className="chip-icon">
-        {customIcon ? (
+        {Icon ? (
+          <Icon size={40} color={iconColor || "#f5f0e8"} aria-hidden="true" />
+        ) : customIcon ? (
           <CustomIcon type={customIcon} size={40} />
         ) : icon ? (
           <img src={icon} alt={name} style={{ width: 40, height: 40, objectFit: "contain", filter: invert ? "invert(1)" : "none", display: "block" }} />
-        ) : (
-          <span className="chip-badge" aria-hidden="true">{badge}</span>
-        )}
+        ) : null}
       </span>
       <span className="chip-text">{name}</span>
     </div>
@@ -235,21 +236,6 @@ const SkillsSection = () => {
           display: flex;
           align-items: center;
           transform-origin: center;
-        }
-
-        .chip-badge {
-          width: 40px;
-          height: 40px;
-          border: 1px solid rgba(201, 151, 44, 0.6);
-          border-radius: 50%;
-          display: grid;
-          place-items: center;
-          color: #c9972c;
-          background: rgba(201, 151, 44, 0.08);
-          font-family: 'DM Sans', sans-serif;
-          font-size: 12px;
-          font-weight: 600;
-          letter-spacing: 0.03em;
         }
 
         .chip-text {

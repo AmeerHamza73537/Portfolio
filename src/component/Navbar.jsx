@@ -93,7 +93,7 @@ const Navbar = () => {
             }
           }}
         >
-          Ameer Hamza
+          Portfolio
         </p>
 
         <ul className="hidden md:flex gap-8 items-center list-none m-0 p-0">
