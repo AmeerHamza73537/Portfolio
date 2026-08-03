@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import tailwindIcon from "../assets/image.png";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,7 +15,7 @@ const skills = [
       { name: "TypeScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" },
       { name: "React", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
       { name: "Next.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg", invert: true },
-      { name: "Tailwind CSS", icon: "/src/assets/image.png" },
+      { name: "Tailwind CSS", icon: tailwindIcon },
       { name: "Redux", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redux/redux-original.svg" },
       { name: "GSAP", customIcon: "gsap" },
       { name: "Framer Motion", customIcon: "framer" },
@@ -26,6 +27,20 @@ const skills = [
     items: [
       { name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" },
       { name: "Express.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg", invert: true },
+    ],
+  },
+  {
+    category: "AI & Agents",
+    items: [
+      { name: "Python", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" },
+      { name: "NumPy", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original.svg" },
+      { name: "Pandas", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg" },
+      { name: "Matplotlib", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/matplotlib/matplotlib-original.svg" },
+      { name: "LangChain", badge: "LC" },
+      { name: "OpenAI API", badge: "OA" },
+      { name: "LLM", badge: "AI" },
+      { name: "Anthropic API", badge: "A" },
+      { name: "Groq API", badge: "G" },
     ],
   },
   {
@@ -81,7 +96,7 @@ const CustomIcon = ({ type, size = 40 }) => {
   return null;
 };
 
-const Chip = ({ name, icon, invert, customIcon }) => {
+const Chip = ({ name, icon, invert, customIcon, badge }) => {
   const chipRef = useRef(null);
 
   const handleMouseEnter = () => {
@@ -101,8 +116,10 @@ const Chip = ({ name, icon, invert, customIcon }) => {
       <span className="chip-icon">
         {customIcon ? (
           <CustomIcon type={customIcon} size={40} />
-        ) : (
+        ) : icon ? (
           <img src={icon} alt={name} style={{ width: 40, height: 40, objectFit: "contain", filter: invert ? "invert(1)" : "none", display: "block" }} />
+        ) : (
+          <span className="chip-badge" aria-hidden="true">{badge}</span>
         )}
       </span>
       <span className="chip-text">{name}</span>
@@ -218,6 +235,21 @@ const SkillsSection = () => {
           display: flex;
           align-items: center;
           transform-origin: center;
+        }
+
+        .chip-badge {
+          width: 40px;
+          height: 40px;
+          border: 1px solid rgba(201, 151, 44, 0.6);
+          border-radius: 50%;
+          display: grid;
+          place-items: center;
+          color: #c9972c;
+          background: rgba(201, 151, 44, 0.08);
+          font-family: 'DM Sans', sans-serif;
+          font-size: 12px;
+          font-weight: 600;
+          letter-spacing: 0.03em;
         }
 
         .chip-text {
